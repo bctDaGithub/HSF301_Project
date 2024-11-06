@@ -1,32 +1,32 @@
 package hsf301.fe.project.pojo;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "seller")
-@NoArgsConstructor
+@Table(name = "flowers")
 @Getter
 @Setter
-public class Seller {
+@NoArgsConstructor
+public class Flower {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int sellerId;
+    private int flowerId;
+    
+    private String type; 
+    private int quantity; 
+    private String condition; 
+    private double price; 
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
-
-    @Column(name = "type")
-    private String type; // "Retail" or "Shop"
-
+    @ManyToOne
+    @JoinColumn(name = "seller_id") 
+    private Users seller;
 }
