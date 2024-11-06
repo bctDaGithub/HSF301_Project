@@ -1,0 +1,89 @@
+/* Modal styles */
+.modal-content {
+    border-radius: 8px;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+/* Form styles */
+.form-label {
+    font-weight: 500;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 0.5rem 0;
+    font-weight: bold;
+}
+
+.form-check-label {
+    font-size: 0.9rem;
+}
+
+/* Social buttons */
+.social-buttons button {
+    color: #333;
+}
+
+/* Error message */
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+/* Modal animation */
+.modal.fade .modal-dialog {
+    transition: transform .3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* Links */
+.text-decoration-none {
+    color: #007bff;
+}
+
+.text-decoration-none:hover {
+    text-decoration: underline !important;
+}
+
+/* Social buttons hover effect */
+.social-buttons .btn-link:hover {
+    background-color: #f8f9fa;
+    border-radius: 50%;
+}
+
+/* Input focus effect */
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Remember me checkbox style */
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Modal header style */
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+/* Modal title style */
+.modal-title {
+    color: #333;
+    font-weight: bold;
+}
+
+/* Submit button hover effect */
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
