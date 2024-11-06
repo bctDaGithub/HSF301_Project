@@ -17,11 +17,20 @@ public class FlowerController {
     @Autowired
     private IFlowerService flowerService;
 
+
     @GetMapping
     public String getAllFlowers(Model model) {
-        List<Flower> flowers = flowerService.getAllFlowers();
-        model.addAttribute("flowers", flowers);
-        return "flower/flowers";
+        try {
+            model.addAttribute("flower", new Flower());
+            List<Flower> flowers = flowerService.getAllFlowers();
+            model.addAttribute("flowers", flowers);
+            System.out.printf("Hello1");
+            return "flower/flowers";
+        } catch (Exception e) {
+            // Xử lý lỗi và trả về thông báo
+            model.addAttribute("errorMessage", "Error retrieving flowers: " + e.getMessage());
+            return "error/403"; // Đảm bảo rằng có trang lỗi tương ứng
+        }
     }
 
     @GetMapping("/{id}")

@@ -16,7 +16,7 @@ import jakarta.validation.constraints.Size;
 public class Flower {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
     @NotBlank(message = "Flower name is required")
     @Size(max = 100, message = "Flower name must be less than 100 characters")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
   <title>Flower Detail</title>
 </head>
@@ -10,10 +10,11 @@
   <p><strong>Name:</strong> <span th:text="${flower.name}"></span></p>
   <p><strong>Type:</strong> <span th:text="${flower.type}"></span></p>
   <p><strong>Quantity:</strong> <span th:text="${flower.quantity}"></span></p>
+    <p><strong>Image:</strong> <span th:text="${flower.imageUrl}"></span></p>
   <p><strong>Condition:</strong> <span th:text="${flower.condition}"></span></p>
   <p><strong>Price:</strong> <span th:text="${flower.price}"></span></p>
 </div>
-<a th:href="@{/flowers/edit/{id}(id=${flower.flowerId})}">Edit</a>
+<a th:href="@{/flowers/edit/{id}(id=${flower.id})}">Edit</a>
 <a th:href="@{/flowers}">Back to List</a>
 </body>
 </html>

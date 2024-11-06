@@ -21,7 +21,9 @@ public class FlowerServiceImpl implements IFlowerService {
     @Override
     @Transactional(readOnly = true)
     public List<Flower> getAllFlowers() {
+        System.out.printf("Hello");
         return flowerRepository.findAll();
+
     }
 
     // Chỉ đọc, không cần transaction ghi
