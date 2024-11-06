@@ -5,27 +5,29 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+@Entity
+@Table(name = "order_flowers")
 @Getter
 @Setter
-
-@Entity
-@Table(name = "shipper")
-public class Shipper {
+@NoArgsConstructor
+public class OrderFlower {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int shipperId;
+    private int id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    private double salary; 
+    @ManyToOne
+    @JoinColumn(name = "flower_id")
+    private Flower flower;
 
+    private int quantity; 
 }
