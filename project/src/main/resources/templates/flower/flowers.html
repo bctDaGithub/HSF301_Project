@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Flowers List</title>
+</head>
+<body>
+<h1>List of Flowers</h1>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Type</th>
+    <th>Quantity</th>
+    <th>Condition</th>
+    <th>Price</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="flower : ${flowers}">
+    <td th:text="${flower.flowerId}"></td>
+    <td th:text="${flower.type}"></td>
+    <td th:text="${flower.quantity}"></td>
+    <td th:text="${flower.condition}"></td>
+    <td th:text="${flower.price}"></td>
+    <td><a th:href="@{/flowers/edit/{id}(id=${flower.flowerId})}">Edit</a></td>
+    <td><a th:href="@{/flowers/delete/{id}(id=${flower.flowerId})}">Delete</a></td>
+  </tr>
+  </tbody>
+</table>
+<a href="/flowers/create">Add New Flower</a>
+</body>
+</html>
