@@ -5,16 +5,17 @@ import lombok.*;
 
 @Entity
 @Table(name = "flowers")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Flower {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, length = 100)
+
+    @Column(nullable = false)
+
     private String name;
 
     private String type;
