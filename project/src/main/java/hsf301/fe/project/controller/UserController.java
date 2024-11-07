@@ -5,6 +5,7 @@ import hsf301.fe.project.service.defines.IEmailService;
 import hsf301.fe.project.service.defines.IUsersService;
 import hsf301.fe.project.service.defines.IVerificationService;
 import hsf301.fe.project.utils.CodeGenerator;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -80,27 +81,30 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String showLoginForm(HttpServletRequest request, Model model) {
+        String referer = request.getHeader("Referer");
+        model.addAttribute("referer", referer);
         return "user/login";
     }
 
     @PostMapping("/login")
     public String loginUser(@RequestParam("email") String email,
-            @RequestParam("password") String password,
-            HttpSession session, Model model) {
+                            @RequestParam("password") String password,
+                            @RequestParam(value = "referer", required = false) String referer,
+                            HttpSession session, Model model ) {
         Users user = usersService.authenticateUser(email, password);
         if (user != null) {
             if (user.isActive()) {
                 session.setAttribute("loggedInUser", user);
                 String role = user.getRole();
-
+                referer = null;
                 // Navigate based on role
                 if ("ADMIN".equals(role)) {
-                    return "redirect:/admin/home";
+                    return referer != null ? "redirect:" + referer : "redirect:/admin/home";
                 } else if ("CUSTOMER".equals(role)) {
-                    return "redirect:/customer/dashboard";
+                    return "redirect:/home";
                 } else if ("SELLER".equals(role)) {
-                    return "redirect:/seller/dashboard";
+                    return referer != null ? "redirect:" + referer : "redirect:/Seller/home";
                 } else {
                     model.addAttribute("loginError", "Role not recognized.");
                     return "user/login";
