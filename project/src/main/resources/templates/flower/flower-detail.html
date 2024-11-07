@@ -1,20 +1,50 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
   <title>Flower Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/detail.css}">
 </head>
 <body>
-<h1>Flower Details</h1>
-<div>
-  <p><strong>ID:</strong> <span th:text="${flower.id}"></span></p>
-  <p><strong>Name:</strong> <span th:text="${flower.name}"></span></p>
-  <p><strong>Type:</strong> <span th:text="${flower.type}"></span></p>
-  <p><strong>Quantity:</strong> <span th:text="${flower.quantity}"></span></p>
-    <p><strong>Image:</strong> <span th:text="${flower.imageUrl}"></span></p>
-  <p><strong>Condition:</strong> <span th:text="${flower.condition}"></span></p>
-  <p><strong>Price:</strong> <span th:text="${flower.price}"></span></p>
+<div class="header">
+  <h1>Chợ Hoa</h1>
+  <div class="auth-buttons">
+    <a href="#">Đăng nhập</a>
+    <a href="#">Đăng ký</a>
+  </div>
 </div>
-<a th:href="@{/flowers/edit/{id}(id=${flower.id})}">Edit</a>
-<a th:href="@{/flowers}">Back to List</a>
+<div class="search-bar">
+  <div style="display: flex; align-items: center;">
+    <input placeholder="Tìm kiếm sản phẩm..." type="text"/>
+    <button><i class="fas fa-search"></i></button>
+  </div>
+  <div class="cart">
+    <i class="fas fa-shopping-cart"></i>
+  </div>
+</div>
+<div class="container">
+  <div class="flower-details">
+    <div class="flower-image">
+      <img th:src="${flower.imageUrl}" alt="A vibrant yellow tulip in full bloom with green leaves and a clear blue sky in the background" width="400" height="400">
+    </div>
+    <div class="flower-info">
+      <h2>ID: <span th:text="${flower.id}"></span></h2>
+      <p><strong>Name:</strong> <span th:text="${flower.name}"></span></p>
+      <p><strong>Type:</strong> <span th:text="${flower.type}"></span></p>
+      <p><strong>Quantity:</strong> <span th:text="${flower.quantity}"></span></p>
+      <p><strong>Condition:</strong> <span th:text="${flower.condition}"></span></p>
+      <p class="price"><strong>Price:</strong> $<span th:text="${flower.price}"></span></p>
+    </div>
+  </div>
+  <div class="actions">
+    <a th:href="@{/flowers/edit/{id}(id=${flower.id})}"><i class="fas fa-edit"></i> Edit</a>
+    <a th:href="@{/flowers}"><i class="fas fa-arrow-left"></i> Back to List</a>
+  </div>
+</div>
+<div class="footer">
+  <p>© 2023 Chợ Hoa. Bản quyền thuộc về các tác giả.</p>
+</div>
 </body>
 </html>
