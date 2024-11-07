@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nạp tiền vào ví</title>
+</head>
+<body>
+<h1>Nạp tiền vào ví</h1>
+
+<!-- Form để gửi yêu cầu nạp tiền -->
+<form action="/wallet/add-funds" method="post">
+    <label for="amount">Số tiền nạp (VNĐ):</label>
+    <input type="number" id="amount" name="amount" required min="1">
+    <button type="submit">Nạp tiền</button>
+</form>
+</body>
+</html>
