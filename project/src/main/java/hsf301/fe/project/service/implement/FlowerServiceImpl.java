@@ -58,6 +58,12 @@ public class FlowerServiceImpl implements IFlowerService {
         return null; // hoặc throw exception nếu muốn xử lý lỗi
     }
 
+    @Override
+    @Transactional
+    public List<Flower> getFlowersBySellerId(int sellerId) {
+        return flowerRepository.findAllBySellerId(sellerId);
+    }
+
     // Xóa, cần transaction để đảm bảo tính nhất quán dữ liệu
     @Override
     @Transactional

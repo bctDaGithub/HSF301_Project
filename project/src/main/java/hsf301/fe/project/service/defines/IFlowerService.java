@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface IFlowerService {
 
     List<Flower> getAllFlowers();
-
+    List<Flower> getFlowersBySellerId(int sellerId);
 
     Optional<Flower> getFlowerById(int flowerId);
 

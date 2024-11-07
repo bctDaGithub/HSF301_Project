@@ -4,34 +4,13 @@
   <title>Chợ Hoa</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" th:href="@{/css/styles.css}">
   <link rel="stylesheet" th:href="@{/css/home.css}">
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<div class="header">
-  <h1>Chợ Hoa</h1>
-  <div class="auth-buttons">
-    <a th:href="@{/showLoginPage}">Đăng nhập</a>
-    <a href="#">Đăng ký</a>
-  </div>
-</div>
-<div class="search-bar">
-  <div style="display: flex; align-items: center;">
-    <input placeholder="Tìm kiếm sản phẩm..." type="text"/>
-    <button><i class="fas fa-search"></i></button>
-  </div>
-  <div class="cart">
-    <i class="fas fa-shopping-cart"></i>
-  </div>
-</div>
-<div class="nav">
-  <a href="#">Trang chủ</a>
-  <a href="#">Cửa hàng</a>
-  <a href="#">Danh mục</a>
-  <a href="#">Liên hệ</a>
-  <a href="#">Giới thiệu</a>
-</div>
+<div th:replace="~{header :: header}"></div>
+
 <div class="main-content">
 <div class="container" id="product-container">
   <!-- Lặp qua danh sách sản phẩm và hiển thị từng sản phẩm -->
@@ -89,8 +68,6 @@
   </div>
 </div>
 </div>
-<div class="footer">
-  <p>© 2023 Chợ Hoa. Bản quyền thuộc về các tác giả.</p>
-</div>
+<div th:replace="footer :: footer"></div>
 </body>
 </html>

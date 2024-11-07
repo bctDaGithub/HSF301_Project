@@ -22,4 +22,8 @@ public class HomeController {
         model.addAttribute("flowers", flowers);
         return "home";
     }
+    @GetMapping("/")
+    public String redirectToHome() {
+        return "redirect:/showHomePage"; // Điều hướng đến `/home` hoặc bất kỳ đường dẫn nào bạn muốn
+    }
 }
