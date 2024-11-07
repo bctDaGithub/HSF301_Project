@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả giao dịch</title>
+</head>
+<body>
+<h1>Kết quả giao dịch</h1>
+
+<!-- Kết quả giao dịch sẽ hiển thị ở đây -->
+<p>
+    Giao dịch
+    <span th:text="${success ? 'thành công' : 'thất bại'}">Thành công</span>!
+    <br>
+    Mã giao dịch: <span th:text="${txnRef}">Mã giao dịch</span>
+    <br>
+    Số tiền: <span th:text="${amount}">Số tiền</span> VNĐ
+</p>
+</body>
+</html>
