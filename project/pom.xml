@@ -89,8 +89,6 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-<<<<<<< Updated upstream
-=======
 
 		<dependency>
 			<groupId>com.google.firebase</groupId>
@@ -103,7 +101,6 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
->>>>>>> Stashed changes
 	</dependencies>
 
 	<build>
