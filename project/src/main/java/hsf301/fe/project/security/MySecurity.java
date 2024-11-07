@@ -1,7 +1,6 @@
 // package hsf301.fe.project.security;
 
 // import javax.sql.DataSource;
-
 // import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.context.annotation.Bean;
 // import org.springframework.context.annotation.Configuration;
@@ -11,6 +10,7 @@
 
 // @Configuration
 // public class MySecurity {
+
 //     @Bean
 //     @Autowired
 //     public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource){
@@ -27,31 +27,25 @@
 //     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 //         http.authorizeHttpRequests(
 //             configurer -> configurer
-//                     .requestMatchers("/public/**").permitAll()
+//                     .requestMatchers("/public/**").permitAll() 
                     
-//                     // Quy định quyền truy cập cho từng vai trò
-//                     .requestMatchers("/admin/**").hasRole("1") // Chỉ admin
-//                     .requestMatchers("/customer/**").hasRole("2") // Chỉ customer
-//                     .requestMatchers("/seller/**").hasRole("3") // Chỉ seller
-//                     .requestMatchers("/shipper/**").hasRole("4") // Chỉ shipper
+//                     .requestMatchers("/admin/**").hasRole("ADMIN") 
+//                     .requestMatchers("/customer/**").hasAuthority("CUSTOMER") 
+//                     .requestMatchers("/seller/**").hasAuthority("SELLER") 
                     
-//                     // Cấp quyền truy cập dựa trên các vai trò khác nhau
-//                     .requestMatchers("/shared/**").hasAnyRole("1", "2", "3", "4") // Các trang chung cho tất cả các vai trò
+//                     .requestMatchers("/shared/**").hasAnyAuthority("ADMIN", "CUSTOMER", "SELLER") 
                     
-//                     .anyRequest().authenticated() // Các request khác yêu cầu xác thực
+//                     .anyRequest().authenticated() 
 //         ).formLogin(
-//                 form -> form.loginPage("/showLoginPage")
-//                              .loginProcessingUrl("/authenticateTheUser")
-//                              .permitAll()
+//                 form -> form.loginPage("/showLoginPage") 
+//                              .loginProcessingUrl("/authenticateTheUser") 
+//                              .permitAll() 
 //         ).logout(
-//                 logout -> logout.permitAll()
+//                 logout -> logout.permitAll() 
 //         ).exceptionHandling(
-//                 configurer -> configurer.accessDeniedPage("/showPage403")
+//                 configurer -> configurer.accessDeniedPage("/showPage403") 
 //         );
     
 //         return http.build();
 //     }
-    
-
-
 // }
