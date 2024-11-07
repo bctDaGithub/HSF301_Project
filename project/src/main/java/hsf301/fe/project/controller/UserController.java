@@ -5,7 +5,6 @@ import hsf301.fe.project.service.defines.IEmailService;
 import hsf301.fe.project.service.defines.IUsersService;
 import hsf301.fe.project.service.defines.IVerificationService;
 import hsf301.fe.project.utils.CodeGenerator;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -97,7 +96,7 @@ public class UserController {
 
                 // Navigate based on role
                 if ("ADMIN".equals(role)) {
-                    return "redirect:/admin/dashboard";
+                    return "redirect:/admin/home";
                 } else if ("CUSTOMER".equals(role)) {
                     return "redirect:/customer/dashboard";
                 } else if ("SELLER".equals(role)) {
@@ -121,7 +120,7 @@ public class UserController {
         session.invalidate();
         return "redirect:/user/login";
     }
-    
+
     @GetMapping("/forgot-password")
     public String showForgotPasswordForm() {
         return "user/forgotPassword";
@@ -143,7 +142,8 @@ public class UserController {
     }
 
     @PostMapping("/verify-forgot-password")
-    public String verifyForgotPassword(@RequestParam("email") String email, @RequestParam("code") String code, Model model) {
+    public String verifyForgotPassword(@RequestParam("email") String email, @RequestParam("code") String code,
+            Model model) {
         boolean verified = verificationService.verifyCode(email, code);
         if (verified) {
             model.addAttribute("email", email);
@@ -155,31 +155,87 @@ public class UserController {
     }
 
     @PostMapping("/reset-password")
-public String resetPassword(@RequestParam("email") String email,
-                            @RequestParam("password") String password,
-                            @RequestParam("confirmPassword") String confirmPassword,
-                            Model model) {
-    if (!password.equals(confirmPassword)) {
-        model.addAttribute("error", "Passwords do not match.");
-        model.addAttribute("email", email);
-        return "user/resetPassword";
+    public String resetPassword(@RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("confirmPassword") String confirmPassword,
+            Model model) {
+        if (!password.equals(confirmPassword)) {
+            model.addAttribute("error", "Passwords do not match.");
+            model.addAttribute("email", email);
+            return "user/resetPassword";
+        }
+
+        Users user = usersService.findByEmail(email);
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(password)); // Mã hóa mật khẩu
+            usersService.updateUser(user);
+            model.addAttribute("success", "Password has been reset.");
+            return "user/resetPasswordSuccess";
+        } else {
+            model.addAttribute("error", "Email not found.");
+            return "user/resetPassword";
+        }
     }
 
-    Users user = usersService.findByEmail(email);
-    if (user != null) {
-        user.setPassword(passwordEncoder.encode(password)); // Mã hóa mật khẩu
-        usersService.updateUser(user);
-        model.addAttribute("success", "Password has been reset.");
-        return "user/resetPasswordSuccess";
-    } else {
-        model.addAttribute("error", "Email not found.");
-        return "user/resetPassword";
+    @GetMapping("/profile")
+    public String showUserProfile(HttpSession session, Model model) {
+        
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+        boolean isAdmin = loggedInUser.getRole().equals("ADMIN");
+        model.addAttribute("isAdmin", isAdmin);
+        if (loggedInUser == null) {
+            return "redirect:/user/login";
+        }
+        model.addAttribute("user", loggedInUser);
+        return "user/profile";
     }
+
+    @GetMapping("/edit-profile")
+    public String showEditProfileForm(HttpSession session, Model model) {
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/user/login";
+        }
+        model.addAttribute("user", loggedInUser);
+        return "user/editProfile";
+    }
+
+    @PostMapping("/edit-profile")
+    public String editProfile(@ModelAttribute("user") Users user,
+                              @RequestParam(value = "currentPassword", required = false) String currentPassword,
+                              @RequestParam(value = "newPassword", required = false) String newPassword,
+                              @RequestParam(value = "confirmNewPassword", required = false) String confirmNewPassword,
+                              HttpSession session, Model model) {
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+    
+        if (loggedInUser != null) {
+            // Kiểm tra mật khẩu hiện tại nếu muốn đổi mật khẩu
+            if ((newPassword != null && !newPassword.isEmpty()) ||
+                (confirmNewPassword != null && !confirmNewPassword.isEmpty())) {
+                if (!passwordEncoder.matches(currentPassword, loggedInUser.getPassword())) {
+                    model.addAttribute("updateError", "Current password is incorrect.");
+                    return "user/editProfile";
+                }
+    
+                if (!newPassword.equals(confirmNewPassword)) {
+                    model.addAttribute("updateError", "New passwords do not match.");
+                    return "user/editProfile";
+                }
+    
+                loggedInUser.setPassword(passwordEncoder.encode(newPassword));
+            }
+    
+            // Cập nhật thông tin người dùng
+            loggedInUser.setName(user.getName());
+            loggedInUser.setPhone(user.getPhone());
+            usersService.updateUser(loggedInUser);
+            session.setAttribute("loggedInUser", loggedInUser);
+            model.addAttribute("updateSuccess", "Profile updated successfully.");
+            return "user/profile";
+        } else {
+            model.addAttribute("updateError", "Please log in to edit your profile.");
+            return "user/editProfile";
+        }
+    }
+
 }
-
-}   
-
-
-
-
-            

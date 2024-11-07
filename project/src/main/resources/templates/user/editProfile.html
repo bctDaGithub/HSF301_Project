@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link th:if="${isAdmin}" href="/css/admin.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+        /* Đặt nền cho toàn bộ trang */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Cấu trúc container cho toàn bộ nội dung */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Tiêu đề chính */
+h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* Các trường nhập liệu trong form */
+.form-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+/* Tạo khoảng cách giữa các trường nhập liệu */
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+/* Nút submit */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* Phản hồi lỗi khi cập nhật */
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Đảm bảo rằng form luôn chiếm hết chiều rộng của container */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Đảm bảo các trường nhập liệu có chiều rộng đầy đủ */
+.form-control {
+    width: 100%;
+}
+
+/* Các thiết bị di động và màn hình nhỏ */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .btn-primary {
+        font-size: 1rem;
+    }
+
+    .form-control {
+        font-size: 0.9rem;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div th:if="${isAdmin}" th:replace="fragments/navBarAdmin :: navbar"></div>
+
+<div class="container mt-5">
+    <h2>Edit Profile</h2>
+    <form th:action="@{/user/edit-profile}" method="post" th:object="${user}">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" name="name" class="form-control" th:field="*{name}" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-control" th:field="*{email}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" id="phone" name="phone" class="form-control" th:field="*{phone}" required>
+        </div>
+        <div class="mb-3">
+            <label for="currentPassword" class="form-label">Current Password (required for updates)</label>
+            <input type="password" id="currentPassword" name="currentPassword" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="newPassword" class="form-label">New Password (optional)</label>
+            <input type="password" id="newPassword" name="newPassword" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="confirmNewPassword" class="form-label">Confirm New Password (optional)</label>
+            <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <div th:if="${updateError}" class="alert alert-danger mt-3">
+            <p th:text="${updateError}"></p>
+        </div>
+    </form>
+</div>
+</body>
+</html>
