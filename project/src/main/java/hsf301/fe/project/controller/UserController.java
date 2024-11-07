@@ -48,14 +48,12 @@ public class UserController {
             return "user/register";
         }
 
-        // Generate and send verification code
         String code = CodeGenerator.generateCode();
         verificationService.saveCode(user.getEmail(), code);
         emailService.sendVerificationCode(user.getEmail(), code);
 
         System.out.println("Email to be verified: " + user.getEmail());
 
-        // Add email to the model
         model.addAttribute("email", user.getEmail());
         return "user/verify";
     }
