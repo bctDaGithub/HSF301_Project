@@ -11,4 +11,5 @@ public interface IUsersService {
     public Users findByUserId(int userId);
     public Users updateUser(Users user);
     public Users authenticateUser(String email, String password);
+    public Users findByEmail(String email);
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Verification</title>
+    <link rel="stylesheet" href="/css/verify.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Account Verification</h2>
+        <p>A verification code has been sent to your email: <strong th:text="${email}">[Email]</strong>. Please enter the code below to complete your registration.</p>
+
+        <div th:if="${verificationError != null}">
+            <span th:text="${verificationError}">Invalid or expired verification code.</span>
+        </div>
+
+        <form action="/user/verify" method="post">
+            <input type="hidden" name="email" th:value="${email}">
+            <div class="form-group">
+                <label for="code">Verification Code</label>
+                <input type="text" id="code" name="code" required>
+            </div>
+            <button type="submit">Verify</button>
+        </form>
+
+        <p>If you didn’t receive the email, please check your spam folder or <a th:href="@{/user/resend-code(email=${email})}">click here to resend</a>.</p>
+    </div>
+</body>
+</html>

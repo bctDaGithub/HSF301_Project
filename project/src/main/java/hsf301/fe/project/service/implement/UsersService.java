@@ -5,6 +5,8 @@ import hsf301.fe.project.repository.IUsersRepository;
 import hsf301.fe.project.service.defines.IUsersService;
 import jakarta.transaction.Transactional;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class UsersService implements IUsersService {
     @Transactional
     public Users createNewUsers(Users users) {
         users.setPassword(passwordEncoder.encode(users.getPassword()));
+        users.setActive(true);
+        LocalDate today = LocalDate.now();
+        users.setRegisterDate(Date.valueOf(today));
         return usersRepository.save(users);
     }
 
@@ -54,5 +59,10 @@ public class UsersService implements IUsersService {
             return user;
         }
         return null;
+    }
+
+    @Override
+    public Users findByEmail(String email) {
+        return usersRepository.findByEmail(email);
     }
 }
