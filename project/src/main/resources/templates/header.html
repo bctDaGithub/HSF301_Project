@@ -1,0 +1,32 @@
+<div th:fragment="header">
+    <div class="header">
+        <h1>Chợ Hoa</h1>
+        <div class="auth-buttons">
+            <!-- Kiểm tra nếu username đã tồn tại trong session -->
+            <div th:if="${session.username == null}">
+                <a th:href="@{/showLoginPage}">Đăng nhập</a>
+                <a href="#">Đăng ký</a>
+            </div>
+            <div th:if="${session.username != null}">
+                <span>Xin chào, <strong th:text="${session.username}"></strong>!</span>
+                <a th:href="@{/logout}">Đăng xuất</a>
+            </div>
+        </div>
+    </div>
+    <div class="search-bar">
+        <div style="display: flex; align-items: center;">
+            <input placeholder="Tìm kiếm sản phẩm..." type="text"/>
+            <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="cart">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+    </div>
+    <div class="nav">
+        <a href="#">Trang chủ</a>
+        <a href="#">Cửa hàng</a>
+        <a href="#">Danh mục</a>
+        <a href="#">Liên hệ</a>
+        <a href="#">Giới thiệu</a>
+    </div>
+</div>
