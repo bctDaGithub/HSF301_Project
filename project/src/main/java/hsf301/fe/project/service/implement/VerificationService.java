@@ -11,6 +11,8 @@ public class VerificationService implements IVerificationService {
 
     private final Map<String, String> codeStorage = new ConcurrentHashMap<>();
     private final Map<String, Long> expiryStorage = new ConcurrentHashMap<>();
+    private final Map<String, String> resetCodeStorage = new ConcurrentHashMap<>();
+    private static final long RESET_EXPIRATION_TIME_MS = 10 * 60 * 1000; 
     private static final long EXPIRATION_TIME_MS = 5 * 60 * 1000; // 5 phút
 
     public void saveCode(String email, String code) {

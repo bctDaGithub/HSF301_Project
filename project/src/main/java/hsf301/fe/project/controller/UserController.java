@@ -5,8 +5,10 @@ import hsf301.fe.project.service.defines.IEmailService;
 import hsf301.fe.project.service.defines.IUsersService;
 import hsf301.fe.project.service.defines.IVerificationService;
 import hsf301.fe.project.utils.CodeGenerator;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ public class UserController {
     private IEmailService emailService;
     @Autowired
     private IVerificationService verificationService;
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping("/register")
     public String showRegistrationForm(@RequestParam(name = "role", required = false) String role, Model model) {
@@ -118,4 +121,65 @@ public class UserController {
         session.invalidate();
         return "redirect:/user/login";
     }
+    
+    @GetMapping("/forgot-password")
+    public String showForgotPasswordForm() {
+        return "user/forgotPassword";
+    }
+
+    @PostMapping("/forgot-password")
+    public String processForgotPassword(@RequestParam("email") String email, Model model) throws Exception {
+        Users user = usersService.findByEmail(email);
+        if (user != null) {
+            String code = CodeGenerator.generateCode();
+            verificationService.saveCode(email, code);
+            emailService.sendVerificationCode(email, code);
+            model.addAttribute("email", email);
+            return "user/verifyForgotPassword";
+        } else {
+            model.addAttribute("error", "Email not found.");
+            return "user/forgotPassword";
+        }
+    }
+
+    @PostMapping("/verify-forgot-password")
+    public String verifyForgotPassword(@RequestParam("email") String email, @RequestParam("code") String code, Model model) {
+        boolean verified = verificationService.verifyCode(email, code);
+        if (verified) {
+            model.addAttribute("email", email);
+            return "user/resetPassword";
+        } else {
+            model.addAttribute("error", "Invalid or expired verification code.");
+            return "user/verifyForgotPassword";
+        }
+    }
+
+    @PostMapping("/reset-password")
+public String resetPassword(@RequestParam("email") String email,
+                            @RequestParam("password") String password,
+                            @RequestParam("confirmPassword") String confirmPassword,
+                            Model model) {
+    if (!password.equals(confirmPassword)) {
+        model.addAttribute("error", "Passwords do not match.");
+        model.addAttribute("email", email);
+        return "user/resetPassword";
+    }
+
+    Users user = usersService.findByEmail(email);
+    if (user != null) {
+        user.setPassword(passwordEncoder.encode(password)); // Mã hóa mật khẩu
+        usersService.updateUser(user);
+        model.addAttribute("success", "Password has been reset.");
+        return "user/resetPasswordSuccess";
+    } else {
+        model.addAttribute("error", "Email not found.");
+        return "user/resetPassword";
+    }
 }
+
+}   
+
+
+
+
+            
