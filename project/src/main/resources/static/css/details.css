@@ -1,0 +1,48 @@
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.flower-details {
+    display: flex;
+    flex-wrap: wrap;
+}
+.flower-details img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+.flower-info {
+    flex: 1;
+    padding: 20px;
+}
+.flower-info h2 {
+    margin-top: 0;
+    color: #333;
+}
+.flower-info p {
+    margin: 10px 0;
+    color: #666;
+}
+.flower-info .price {
+    font-size: 1.5em;
+    color: #e67e22;
+}
+.actions {
+    text-align: center;
+    margin-top: 20px;
+}
+.actions a {
+    text-decoration: none;
+    color: #fff;
+    background: #3498db;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 0 10px;
+    display: inline-block;
+}
+.actions a:hover {
+    background: #2980b9;
+}

@@ -1,64 +1,96 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Trang chủ - Cửa hàng Hoa</title>
+  <title>Chợ Hoa</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" th:href="@{/css/styles.css}">
   <link rel="stylesheet" th:href="@{/css/home.css}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<header>
-  <h1>Cửa hàng Hoa</h1>
-  <nav>
-    <a th:href="@{/}">Trang chủ</a>
-    <a th:href="@{/cart}">Giỏ hàng</a>
-    <a th:href="@{/contact}">Liên hệ</a>
-  </nav>
-</header>
-
-<div class="container">
-  <section class="hero">
-    <h2>Chào mừng đến với Cửa hàng Hoa</h2>
-    <p>Khám phá bộ sưu tập hoa tươi đẹp nhất của chúng tôi</p>
-    <a href="#products" class="cta-button">Xem Sản Phẩm</a>
-  </section>
-
-  <section id="products" class="products">
-    <h2>Sản Phẩm Nổi Bật</h2>
-    <div class="product-grid">
-      <!-- Sử dụng Thymeleaf để lặp qua danh sách hoa -->
-      <div class="product-card" th:each="flower : ${flowers}">
-        <div class="product-image">
-          <img th:src="@{'/images/' + ${flower.imageUrl}}" th:alt="${flower.name}">
-          <div class="product-overlay">
-            <button class="quick-view"><i class="fas fa-eye"></i></button>
-            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
-          </div>
-        </div>
-        <div class="product-info">
-          <h3 th:text="${flower.name}">Tên hoa</h3>
-          <p class="price" th:text="${#numbers.formatDecimal(flower.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">Giá</p>
-          <div class="rating">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<footer>
-  <p>&copy; 2023 Cửa hàng Hoa. Tất cả quyền được bảo lưu.</p>
-  <div class="footer-links">
-    <a th:href="@{/privacy}">Chính sách bảo mật</a>
-    <a th:href="@{/terms}">Điều khoản sử dụng</a>
+<div class="header">
+  <h1>Chợ Hoa</h1>
+  <div class="auth-buttons">
+    <a th:href="@{/showLoginPage}">Đăng nhập</a>
+    <a href="#">Đăng ký</a>
   </div>
-</footer>
+</div>
+<div class="search-bar">
+  <div style="display: flex; align-items: center;">
+    <input placeholder="Tìm kiếm sản phẩm..." type="text"/>
+    <button><i class="fas fa-search"></i></button>
+  </div>
+  <div class="cart">
+    <i class="fas fa-shopping-cart"></i>
+  </div>
+</div>
+<div class="nav">
+  <a href="#">Trang chủ</a>
+  <a href="#">Cửa hàng</a>
+  <a href="#">Danh mục</a>
+  <a href="#">Liên hệ</a>
+  <a href="#">Giới thiệu</a>
+</div>
+<div class="main-content">
+<div class="container" id="product-container">
+  <!-- Lặp qua danh sách sản phẩm và hiển thị từng sản phẩm -->
+  <div th:each="flower : ${flowers}" class="product-card">
+    <a th:href="@{/flowers/{id}(id=${flower.id})}">
+    <img th:src="@{${flower.imageUrl}}" th:alt="${flower.name}" width="200" height="200"/>
+    <h3 th:text="${flower.name}"></h3>
+    <p th:text="${flower.condition}"></p>
+    <div class="price" th:text="${flower.price} + ' VND'"></div>
+    </a>
+  </div>
+</div>
+<div class="sidebar">
+  <h2>
+    Quảng cáo
+  </h2>
+  <div class="ad">
+    <img alt="Ad 1 - A beautiful flower arrangement" height="200" src="https://storage.googleapis.com/a1aa/image/ciSABHnLiu5nOlmTdNTMs8Mpsg7v4tNx8yFQ55Pa7fomejuTA.jpg" width="300"/>
+    <h3>
+      Ad 1
+    </h3>
+    <p>
+      Beautiful flower arrangements for all occasions.
+    </p>
+  </div>
+  <div class="ad">
+    <img alt="Ad 2 - A stunning bouquet of mixed flowers" height="200" src="https://storage.googleapis.com/a1aa/image/nQmKONkYihZmL11a6g9RHezkeaf7XojHouKiRHEL9kHX6HdnA.jpg" width="300"/>
+    <h3>
+      Ad 2
+    </h3>
+    <p>
+      Get the best deals on mixed flower bouquets.
+    </p>
+  </div>
+  <h2>
+    Shop nổi tiếng
+  </h2>
+  <div class="shop">
+    <img alt="Shop 1 - A popular flower shop" height="200" src="https://storage.googleapis.com/a1aa/image/lhO5AsXUz6q0INB29PKKMkvLtanqQGNquNeFtIFMQBDnejuTA.jpg" width="300"/>
+    <h3>
+      Shop 1
+    </h3>
+    <p>
+      One of the most popular flower shops in town.
+    </p>
+  </div>
+  <div class="shop">
+    <img alt="Shop 2 - A well-known flower shop" height="200" src="https://storage.googleapis.com/a1aa/image/IiHuifBTTKRdUy6bN8W6gbIyOz84F4b9epLMFY7YRu7Q9juTA.jpg" width="300"/>
+    <h3>
+      Shop 2
+    </h3>
+    <p>
+      Well-known for its beautiful flower arrangements.
+    </p>
+  </div>
+</div>
+</div>
+<div class="footer">
+  <p>© 2023 Chợ Hoa. Bản quyền thuộc về các tác giả.</p>
+</div>
 </body>
 </html>
