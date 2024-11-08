@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .notification-item.read {
+            background-color: #f9f9f9;
+        }
+        .notification-item.unread {
+            background-color: #e9f5ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Navbar Fragment -->
+    <div th:replace="~{fragments/navBarAdmin :: navbar}"></div>
+
+    <div class="container mt-5">
+        <h2>Notifications</h2>
+        <div th:if="${notifications == null}">
+            <p>No notifications available</p>
+        </div>
+        <div th:if="${notifications != null}">
+            <ul class="list-group">
+                <li th:each="notification : ${notifications}"
+                    th:classappend="${notification.isRead} ? 'read' : 'unread'"
+                    class="list-group-item notification-item"
+                    th:data-id="${notification.notiId}"
+                    th:onclick="markAsRead([[${notification.notiId}]])">
+                    <div th:text="${notification.title}"></div>
+                    <small th:text="${notification.msg}"></small>
+                    <br>
+                    <small th:text="${#dates.format(notification.createDate, 'yyyy-MM-dd')}"></small>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+   
+</body>
+<script>
+    function markAsRead(notificationId) {
+    fetch(`/notifications/mark-as-read`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `notiId=${notificationId}`
+    })
+    .then(response => {
+        if (response.ok) {
+            document.querySelector(`[data-id="${notificationId}"]`).classList.remove('unread');
+            document.querySelector(`[data-id="${notificationId}"]`).classList.add('read');
+        } else {
+            console.error('Failed to mark notification as read');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+</script>
+
+</html>
