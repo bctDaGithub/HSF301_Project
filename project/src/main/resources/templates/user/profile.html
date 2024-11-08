@@ -1,172 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>User Management Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link href="/css/admin.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <link href="/css/admin.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
     <script>
-        function confirmBan(event) {
-            if (!confirm("Are you sure you want to ban this user?")) {
-                event.preventDefault();
-            }
+      function confirmBan(event) {
+        if (!confirm("Are you sure you want to ban this user?")) {
+          event.preventDefault();
         }
+      }
 
-        function confirmUnban(event) {
-            if (!confirm("Are you sure you want to unban this user?")) {
-                event.preventDefault();
-            }
+      function confirmUnban(event) {
+        if (!confirm("Are you sure you want to unban this user?")) {
+          event.preventDefault();
         }
+      }
     </script>
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: "Arial", sans-serif;
-        }
+      body {
+        background-color: #f8f9fa;
+        font-family: "Arial", sans-serif;
+      }
 
-        table {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-            border-collapse: collapse;
-            width: 100%;
-        }
+      table {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+        border-collapse: collapse;
+        width: 100%;
+      }
 
-        th {
-            background-color: #007bff;
-            color: white;
-            font-weight: bold;
-            padding: 10px;
-            text-align: center;
-        }
+      th {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+      }
 
-        td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #e0e0e0;
-        }
+      td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #e0e0e0;
+      }
 
-        tr:hover {
-            background-color: #f1f1f1;
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      h2 {
+        font-size: 30px;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      button {
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        padding: 8px 15px;
+        font-size: 14px;
+        border: none;
+      }
+
+      button.btn-danger {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      button.btn-danger:hover {
+        background-color: #c82333;
+        cursor: pointer;
+      }
+
+      button.btn-success {
+        background-color: #28a745;
+        color: white;
+      }
+
+      button.btn-success:hover {
+        background-color: #218838;
+        cursor: pointer;
+      }
+
+      form:hover button {
+        transform: scale(1.05);
+      }
+
+      form {
+        display: inline;
+      }
+
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Toàn bộ trang */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+      }
+
+      /* Cấu trúc bao bọc toàn bộ nội dung */
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Tiêu đề chính */
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      /* Profile Card */
+      .profile-card {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .profile-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .profile-row:last-child {
+        border-bottom: none;
+      }
+
+      .profile-row strong {
+        color: #555;
+        font-weight: bold;
+      }
+
+      .profile-row span {
+        color: #333;
+      }
+
+      /* Nút Edit Profile */
+      .text-center .btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+
+      .text-center .btn:hover {
+        background-color: #0056b3;
+      }
+
+      /* Thông báo thành công */
+      .alert {
+        padding: 15px;
+        border-radius: 5px;
+        background-color: #d4edda;
+        color: #155724;
+        margin-top: 15px;
+      }
+
+      .alert p {
+        margin: 0;
+      }
+
+      /* Responsive - Đảm bảo trang hiển thị tốt trên các màn hình nhỏ */
+      @media (max-width: 768px) {
+        .container {
+          padding: 15px;
         }
 
         h2 {
-            font-size: 30px;
-            color: #333;
-            font-weight: bold;
-            margin-bottom: 20px;
+          font-size: 1.5rem;
         }
 
-        button {
-            transition: all 0.3s ease;
-            border-radius: 5px;
-            padding: 8px 15px;
-            font-size: 14px;
-            border: none;
+        .profile-card {
+          padding: 15px;
         }
 
-        button.btn-danger {
-            background-color: #dc3545;
-            color: white;
+        .profile-row {
+          flex-direction: column;
+          padding: 10px 0;
         }
 
-        button.btn-danger:hover {
-            background-color: #c82333;
-            cursor: pointer;
+        .profile-row strong {
+          margin-bottom: 5px;
         }
 
-        button.btn-success {
-            background-color: #28a745;
-            color: white;
+        .profile-row span {
+          font-size: 1rem;
         }
-
-        button.btn-success:hover {
-            background-color: #218838;
-            cursor: pointer;
-        }
-
-        form:hover button {
-            transform: scale(1.05);
-        }
-
-        form {
-            display: inline;
-        }
-
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
+      }
     </style>
-</head>
+  </head>
+ 
 <body>
-
-    <!-- Include Navbar Fragment -->
-    <div th:replace="fragments/navBarAdmin :: navbar"></div>
-
-    <div class="container mt-5">
-        <h2>User Management Dashboard</h2>
-        
-        <!-- Search and Filter Form -->
-        <form th:action="@{/admin/dashboard}" method="get" class="mb-4">
-            <div class="row">
-                <div class="col-md-4">
-                    <input type="text" name="search" class="form-control" placeholder="Search by name or email" th:value="${param.search}">
-                </div>
-                <div class="col-md-4">
-                    <select name="role" class="form-control">
-                        <option value="">All Roles</option>
-                        <option value="CUSTOMER" th:selected="${param.role == 'CUSTOMER'}">Customer</option>
-                        <option value="SELLER" th:selected="${param.role == 'SELLER'}">Seller</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            </div>
-        </form>
-
-        <table class="table table-bordered table-hover mt-4">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Role</th>
-                    <th>Register Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.name}">Name</td>
-                    <td th:text="${user.email}">Email</td>
-                    <td th:text="${user.phone}">Phone</td>
-                    <td th:text="${user.role}">Role</td>
-                    <td th:text="${user.registerDate}">Register Date</td>
-                    <td th:text="${user.active ? 'Active' : 'Banned'}">Status</td>
-                    <td>
-                        <form th:action="@{/admin/ban}" method="post" th:if="${user.active}" onsubmit="confirmBan(event)">
-                            <input type="hidden" name="userId" th:value="${user.id}"/>
-                            <button type="submit" class="btn btn-danger">Ban</button>
-                        </form>
-                        <form th:action="@{/admin/unban}" method="post" th:unless="${user.active}" onsubmit="confirmUnban(event)">
-                            <input type="hidden" name="userId" th:value="${user.id}"/>
-                            <button type="submit" class="btn btn-success">Unban</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div th:replace="fragments/navBarManage :: navbar"></div>
+  <div class="container mt-5">
+    <h2 class="text-center">Your Profile</h2>
+    <div class="profile-card mt-4">
+      <div class="profile-row">
+        <strong>Name:</strong>
+        <span th:text="${user.name}"></span>
+      </div>
+      <div class="profile-row">
+        <strong>Email:</strong>
+        <span th:text="${user.email}"></span>
+      </div>
+      <div class="profile-row">
+        <strong>Phone:</strong>
+        <span th:text="${user.phone}"></span>
+      </div>
+      <div class="profile-row">
+        <strong>Role:</strong>
+        <span th:text="${user.role}"></span>
+      </div>
+      <div class="profile-row">
+        <strong>Register Date:</strong>
+        <span th:text="${user.registerDate}"></span>
+      </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <div class="text-center mt-4">
+      <a th:href="@{/user/edit-profile}" class="btn btn-primary">Edit Profile</a>
+    </div>
+    <div th:if="${updateSuccess}" class="alert alert-success mt-3">
+      <p th:text="${updateSuccess}"></p>    </div>
+  </div>
 </body>
+
 </html>
