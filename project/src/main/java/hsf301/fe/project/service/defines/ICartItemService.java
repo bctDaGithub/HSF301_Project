@@ -9,4 +9,5 @@ public interface ICartItemService {
     CartItem updateCartItem(CartItem item);
     void deleteCartItem(int cartItemId);
     List<CartItem> getCartItemsByCartId(int cartId);
+    List<CartItem> getCartItemsById(List<Integer> cartItemIds);
 }

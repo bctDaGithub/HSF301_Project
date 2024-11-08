@@ -56,11 +56,13 @@
     </div>
 
     <!-- Tổng kết giỏ hàng -->
-    <div class="cart-summary">
+    <div class="cart-summary" th:action="@{/checkout}" method="post">
         <p>Tổng tiền sản phẩm đã chọn: <span id="selected-total">0₫</span></p>
         <p>Tổng tiền: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">0₫</span></p>
-        <button class="checkout-button" onclick="checkoutSelectedItems()">Mua hàng</button>
+        <input type="hidden" name="cartItemIds" id="selected-cart-items" value="">
+        <button type="button" class="checkout-button" onclick="submitCheckoutForm()">Mua hàng</button>
     </div>
+
 </div>
 
 <script>
@@ -93,11 +95,10 @@
     });
 
     // Hàm gửi các sản phẩm đã chọn để thanh toán
-    function checkoutSelectedItems() {
+    function submitCheckoutForm() {
         const selectedIds = [];
         document.querySelectorAll('.cart-item-checkbox:checked').forEach(checkbox => {
             selectedIds.push(checkbox.value);
-
         });
 
         if (selectedIds.length === 0) {
@@ -105,24 +106,11 @@
             return;
         }
 
-        // Gửi yêu cầu AJAX để tạo đơn hàng với các sản phẩm đã chọn
-        fetch('/checkout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ cartItemIds: selectedIds })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("Đơn hàng đã được tạo thành công!");
-                    location.href = "/orders";
-                } else {
-                    alert("Không thể tạo đơn hàng. Vui lòng thử lại.");
-                }
-            });
+        // Cập nhật các ID đã chọn vào trường hidden trong form
+        document.getElementById('selected-cart-items').value = selectedIds.join(',');
 
+        // Gửi form
+        document.getElementById('cart-summary').submit();
     }
 </script>
 </body>
