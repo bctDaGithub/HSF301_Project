@@ -4,39 +4,56 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <!-- Navbar brand with logo -->
-            <a class="navbar-brand d-flex align-items-center" href="/admin/home" style="display: flex; align-items: center;">
-                <img src="/images/logo.png" alt="Admin Logo" style="max-height: 40px; width: auto; margin-right: 10px;">
-                Admin Panel
+            <a class="navbar-brand d-flex align-items-center" th:href="${isAdmin} ? '/admin/home' : (isSeller ? '/Seller/home' : '/customer/home')"
+               style="display: flex; align-items: center;">
+                <img src="/images/logo.png" alt="Logo" style="max-height: 40px; width: auto; margin-right: 10px;">
+                <span th:text="${isAdmin} ? 'Admin Panel' : (isSeller ? 'Seller Panel' : 'Customer Panel')"></span>
             </a>
 
             <!-- Toggle button for small screens -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <!-- Navbar items -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto" style="margin-left: auto !important;"> <!-- Ensure right-aligned items -->
+                <ul class="navbar-nav ms-auto" style="margin-left: auto !important;">
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/home}">
+                        <a class="nav-link" th:href="@{/showHomePage}">
                             <i class="bi bi-house-door-fill"></i> Home
                         </a>
                     </li>
-                    <li class="nav-item">
+
+                    <!-- Conditional links for Admin and Seller roles -->
+                    <li class="nav-item" th:if="${isAdmin}">
                         <a class="nav-link" href="/admin/dashboard">
                             <i class="bi bi-people-fill"></i> Manage Users
                         </a>
                     </li>
+                    <li class="nav-item" th:if="${isSeller}">
+                        <a class="nav-link" href="/Seller/flowers">
+                            <i class="bi bi-box-seam"></i> Manage Products
+                        </a>
+                    </li>
+                    <li class="nav-item" th:if="${isCustomer}">
+                        <a class="nav-link" href="/customer/orders">
+                            <i class="bi bi-cart-fill"></i> My Orders
+                        </a>
+                    </li>
                 </ul>
 
-                <!-- Navbar items for profile, notifications, and logout (aligned to the right) -->
+                <!-- Notification, Profile, and Logout links -->
                 <ul class="navbar-nav ms-auto" style="margin-left: auto !important;">
+                    <!-- Notification icon with badge -->
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/notifications}">
                             <i class="bi bi-bell-fill"></i> Notifications
                             <span class="badge bg-danger" th:text="${notificationCount > 0 ? notificationCount : ''}"></span>
                         </a>
                     </li>
+
+                    <!-- Profile and Logout links -->
                     <li class="nav-item">
                         <a class="nav-link" href="/user/profile">
                             <i class="bi bi-person-circle"></i> Profile

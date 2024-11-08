@@ -39,19 +39,24 @@ public class NotificationController {
     }
 
     @GetMapping
-    public String getNotifications(HttpSession session, Model model) {
-        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
-        if (loggedInUser == null) {
-            logger.warn("No user logged in for notifications");
-            return "redirect:/user/login";
-        }
-
-        logger.info("Fetching notifications for user ID: {}", loggedInUser.getId());
-        List<Notification> notifications = notificationService.findByUserId(loggedInUser.getId());
-        model.addAttribute("notifications", notifications);
-        logger.info("Number of notifications fetched: {}", notifications.size());
-        return "notifications/list";
+public String getNotifications(HttpSession session, Model model) {
+    Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+    if (loggedInUser == null) {
+        logger.warn("No user logged in for notifications");
+        return "redirect:/user/login";
     }
+
+    logger.info("Fetching notifications for user ID: {}", loggedInUser.getId());
+    List<Notification> notifications = notificationService.findByUserId(loggedInUser.getId());
+
+    // Sort notifications by date in descending order
+    notifications.sort((n1, n2) -> n2.getCreateDate().compareTo(n1.getCreateDate()));
+
+    model.addAttribute("notifications", notifications);
+    logger.info("Number of notifications fetched: {}", notifications.size());
+    return "notifications/list";
+}
+
 
     @PostMapping("/mark-as-read")
     @ResponseBody
