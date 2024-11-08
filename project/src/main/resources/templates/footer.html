@@ -2,4 +2,15 @@
 <div class="footer">
     <p>© 2023 Chợ Hoa. Bản quyền thuộc về các tác giả.</p>
 </div>
+    <script>
+        // JavaScript để hiển thị footer khi người dùng cuộn
+        window.addEventListener("scroll", function() {
+            const footer = document.querySelector(".footer");
+            if (window.scrollY > 50) {
+                footer.style.transform = "translateY(0)";
+            } else {
+                footer.style.transform = "translateY(100%)";
+            }
+        });
+    </script>
 </div>

@@ -29,8 +29,8 @@ public class FlowerServiceImpl implements IFlowerService {
     // Chỉ đọc, không cần transaction ghi
     @Override
     @Transactional(readOnly = true)
-    public Optional<Flower> getFlowerById(int flowerId) {
-        return flowerRepository.findById(flowerId);
+    public Flower getFlowerById(int flowerId) {
+        return flowerRepository.findById(flowerId).orElse(null);
     }
 
     // Thêm mới, cần transaction để đảm bảo dữ liệu được ghi đúng
