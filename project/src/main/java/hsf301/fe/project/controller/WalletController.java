@@ -8,10 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,29 +30,43 @@ import java.util.*;
 public class WalletController {
 
     @Autowired
-    private VnpayConfig VNPayConfig;
+    private VnpayConfig vnpayConfig;
 
     @Autowired
     private WalletService walletService;
 
-    @GetMapping("/get-wallet")
+    @GetMapping("/wallets")
     public ResponseEntity<Wallet> getWalletByUserId(HttpSession httpSession) {
-        Users user= (Users) httpSession.getAttribute("loggedInUser");
-        if(user==null){
-            return (ResponseEntity<Wallet>) ResponseEntity.notFound();
+        Users user = (Users) httpSession.getAttribute("loggedInUser");
+        if (user == null) {
+            return ResponseEntity.notFound().build();
         }
         Wallet wallet = walletService.getWalletByUserId(user.getId());
         return ResponseEntity.ok(wallet);
     }
 
+    @GetMapping("/add-funds")
+    public String showAddFundsPage(HttpSession session) {
+        Users users = (Users) session.getAttribute("loggedInUser");
+        if (users != null) {
+            return "user/wallet"; // Tên file HTML trong thư mục templates
+        }
+        return "user/login";
+    }
+
     @PostMapping("/add-funds")
-    public ResponseEntity<?> addFunds(@RequestParam("amount") Long amountStr, HttpSession session) {
+    public void addFunds(@RequestParam("amount") Long amountStr, HttpSession session, HttpServletResponse response) throws IOException {
+        if (amountStr == null || amountStr <= 0) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid amount.");
+            return;
+        }
+
         try {
             // Kiểm tra người dùng đã đăng nhập
             Users user = (Users) session.getAttribute("loggedInUser");
-
             if (user == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
+                response.sendRedirect("/user/login");
+                return;
             }
 
             Integer userId = user.getId();
@@ -65,8 +76,8 @@ public class WalletController {
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "billpayment";
-            String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
-            String vnp_TmnCode = VNPayConfig.getVnp_TmnCode();
+            String vnp_TxnRef = vnpayConfig.getRandomNumber(8);
+            String vnp_TmnCode = vnpayConfig.getVnp_TmnCode();
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", vnp_Version);
@@ -80,7 +91,7 @@ public class WalletController {
             vnp_Params.put("vnp_Locale", "vn");
 
             // Thiết lập URL callback mặc định cho VNPay
-            String defaultCallbackUrl = VNPayConfig.getVnp_ReturnUrl() + "?userId=" + userId;
+            String defaultCallbackUrl = vnpayConfig.getVnp_ReturnUrl() + "?userId=" + userId;
             vnp_Params.put("vnp_ReturnUrl", defaultCallbackUrl);
             vnp_Params.put("vnp_IpAddr", "127.0.0.1");
 
@@ -111,18 +122,17 @@ public class WalletController {
             query.setLength(query.length() - 1);
 
             // Tạo vnp_SecureHash
-            String vnp_SecureHash = VNPayConfig.hmacSHA512(VNPayConfig.getSecretKey(), hashData.toString());
+            String vnp_SecureHash = vnpayConfig.hmacSHA512(vnpayConfig.getSecretKey(), hashData.toString());
             query.append("&vnp_SecureHash=").append(vnp_SecureHash);
-            String paymentUrl = VNPayConfig.getVnp_PayUrl() + "?" + query.toString();
+            String paymentUrl = vnpayConfig.getVnp_PayUrl() + "?" + query.toString();
 
-            return ResponseEntity.ok(paymentUrl);
+            // Tự động chuyển hướng tới trang thanh toán VNPay
+            response.sendRedirect(paymentUrl);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An error occurred: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
         }
     }
-
 
     @GetMapping("/vnpay_return")
     public void handleVNPayReturn(
@@ -153,7 +163,7 @@ public class WalletController {
                         .queryParam("amount", Long.parseLong(vnp_Amount) / 100)
                         .toUriString();
             } else {
-                redirectUrl = UriComponentsBuilder.fromUriString("/api/payment/result")
+                redirectUrl = UriComponentsBuilder.fromUriString("/wallet/result")
                         .queryParam("success", isSuccess)
                         .queryParam("txnRef", vnp_TxnRef)
                         .queryParam("amount", Long.parseLong(vnp_Amount) / 100)
@@ -162,7 +172,7 @@ public class WalletController {
             response.sendRedirect(redirectUrl);
         } catch (Exception e) {
             String redirectUrl;
-            redirectUrl = UriComponentsBuilder.fromUriString("/api/payment/result")
+            redirectUrl = UriComponentsBuilder.fromUriString("/wallet/result")
                     .queryParam("success", false)
                     .queryParam("txnRef", vnp_TxnRef)
                     .queryParam("amount", Long.parseLong(vnp_Amount) / 100)
@@ -179,6 +189,6 @@ public class WalletController {
         model.addAttribute("success", success);
         model.addAttribute("txnRef", txnRef);
         model.addAttribute("amount", amount);
-        return "payment-result";  // Trả về tên của view template
+        return "user/payment-result";
     }
 }
