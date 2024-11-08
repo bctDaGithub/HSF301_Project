@@ -8,9 +8,17 @@
   <link rel="stylesheet" th:href="@{/css/styles.css}">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+  <script type="module">
+    import { saveCurrentPage,} from '/js/breadcrumbService.js';
+
+    // Gọi hàm lưu trang nhưng không cần update breadcrumb
+    saveCurrentPage('Trang chủ');
+  </script>
 </head>
 <body>
 <div th:replace="~{header :: header}"></div>
+<!-- Breadcrumb -->
+<nav class="breadcrumb mb-4" id="breadcrumb-nav"></nav>
 
 <div class="main-content">
 <div class="container" id="product-container">

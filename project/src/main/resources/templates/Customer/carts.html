@@ -5,9 +5,17 @@
     <title>Giỏ Hàng</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/cart.css}">
+    <script type="module">
+        import { saveCurrentPage, updateBreadcrumb } from '/js/breadcrumbService.js';
+
+        saveCurrentPage('Giỏ hàng');
+        window.addEventListener('DOMContentLoaded', updateBreadcrumb);
+        console.log(localStorage.getItem('historyLinks'));
+    </script>
 </head>
 <body>
 <div class="cart-container">
+    <nav class="breadcrumb mb-4" id="breadcrumb-nav"></nav>
     <h1>Giỏ Hàng</h1>
 
     <!-- Tiêu đề các cột trong giỏ hàng -->
@@ -49,6 +57,7 @@
 
     <!-- Tổng kết giỏ hàng -->
     <div class="cart-summary">
+        <p>Tổng tiền sản phẩm đã chọn: <span id="selected-total">0₫</span></p>
         <p>Tổng tiền: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">0₫</span></p>
         <button class="checkout-button" onclick="checkoutSelectedItems()">Mua hàng</button>
     </div>
@@ -58,14 +67,37 @@
     // Hàm chọn hoặc bỏ chọn tất cả các checkbox
     function toggleSelectAll(selectAllCheckbox) {
         const checkboxes = document.querySelectorAll('.cart-item-checkbox');
-        checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+        calculateSelectedTotal();
     }
+
+    // Hàm tính tổng tiền của các sản phẩm đã chọn
+    function calculateSelectedTotal() {
+        let total = 0;
+        document.querySelectorAll('.cart-item-checkbox:checked').forEach(checkbox => {
+            const cartItem = checkbox.closest('.cart-item');
+            const itemTotalPrice = parseFloat(cartItem.querySelector('.cart-item-total').textContent.replace(/[₫,]/g, ''));
+            total += itemTotalPrice;
+        });
+        document.getElementById('selected-total').textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
+    }
+
+    // Thêm sự kiện 'change' cho các checkbox của từng sản phẩm
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.cart-item-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', calculateSelectedTotal);
+        });
+    });
 
     // Hàm gửi các sản phẩm đã chọn để thanh toán
     function checkoutSelectedItems() {
         const selectedIds = [];
         document.querySelectorAll('.cart-item-checkbox:checked').forEach(checkbox => {
             selectedIds.push(checkbox.value);
+
         });
 
         if (selectedIds.length === 0) {
@@ -90,6 +122,7 @@
                     alert("Không thể tạo đơn hàng. Vui lòng thử lại.");
                 }
             });
+
     }
 </script>
 </body>
