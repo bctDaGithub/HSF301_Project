@@ -1,5 +1,6 @@
 package hsf301.fe.project.controller;
 
+import hsf301.fe.project.pojo.CartItem;
 import hsf301.fe.project.pojo.Flower;
 import hsf301.fe.project.pojo.Users;
 import hsf301.fe.project.service.defines.IFlowerService;
@@ -38,8 +39,9 @@ public class FlowerController {
 
     @GetMapping("/{id}")
     public String getFlowerById(@PathVariable int id, Model model) {
-        Optional<Flower> flower = flowerService.getFlowerById(id);
-        model.addAttribute("flower", flower.orElse(null));
+        Flower flower = flowerService.getFlowerById(id);
+        model.addAttribute("flower", flower);
+        model.addAttribute("cartItem", new CartItem());
         return "flower/flower-detail";
     }
 
@@ -59,8 +61,8 @@ public class FlowerController {
 
     @GetMapping("/edit/{id}")
     public String showEditFlowerForm(@PathVariable int id, Model model) {
-        Optional<Flower> flower = flowerService.getFlowerById(id);
-        model.addAttribute("flower", flower.orElse(null));
+        Flower flower = flowerService.getFlowerById(id);
+        model.addAttribute("flower", flower);
         return "flower/flower-form";
     }
 

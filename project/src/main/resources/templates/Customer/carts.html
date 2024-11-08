@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ Hàng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
+</head>
+<body>
+<div class="cart-container">
+    <h1>Giỏ Hàng</h1>
+
+    <!-- Tiêu đề các cột trong giỏ hàng -->
+    <div class="cart-header">
+        <div class="cart-item-select"><input type="checkbox" id="select-all" onclick="toggleSelectAll(this)"></div>
+        <div class="cart-item-name">Sản phẩm</div>
+        <div class="cart-item-quantity">Số lượng</div>
+        <div class="cart-item-price">Đơn giá</div>
+        <div class="cart-item-total">Thành tiền</div>
+        <div class="cart-item-action">Thao tác</div>
+    </div>
+
+    <!-- Hiển thị danh sách sản phẩm trong giỏ hàng -->
+    <div th:each="cartItem : ${cartItems}" class="cart-item">
+        <div class="cart-item-select">
+            <input type="checkbox" name="selectedItems" th:value="${cartItem.id}" class="cart-item-checkbox">
+        </div>
+        <div class="cart-item-name">
+            <img th:src="@{${cartItem.flower.imageUrl}}" alt="Sản phẩm">
+            <span th:text="${cartItem.flower.name}">Tên sản phẩm</span>
+        </div>
+
+        <div class="cart-item-quantity">
+            <div class="quantity-controls">
+                <button th:onclick="'updateQuantity(' + ${cartItem.id} + ', -1)'" type="button">-</button>
+                <input type="number" th:value="${cartItem.quantity}" min="1" readonly>
+                <button th:onclick="'updateQuantity(' + ${cartItem.id} + ', 1)'" type="button">+</button>
+            </div>
+
+        </div>
+
+        <div class="cart-item-price" th:text="${#numbers.formatDecimal(cartItem.unitPrice, 1, 'COMMA', 2, 'POINT')}">250,000₫</div>
+        <div class="cart-item-total" th:text="${#numbers.formatDecimal(cartItem.totalPrice, 1, 'COMMA', 2, 'POINT')}">250,000₫</div>
+
+        <div class="cart-item-action">
+            <a href="#" th:href="@{/cart/remove/{id}(id=${cartItem.id})}" class="remove-link">Xóa</a>
+        </div>
+    </div>
+
+    <!-- Tổng kết giỏ hàng -->
+    <div class="cart-summary">
+        <p>Tổng tiền: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">0₫</span></p>
+        <button class="checkout-button" onclick="checkoutSelectedItems()">Mua hàng</button>
+    </div>
+</div>
+
+<script>
+    // Hàm chọn hoặc bỏ chọn tất cả các checkbox
+    function toggleSelectAll(selectAllCheckbox) {
+        const checkboxes = document.querySelectorAll('.cart-item-checkbox');
+        checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+    }
+
+    // Hàm gửi các sản phẩm đã chọn để thanh toán
+    function checkoutSelectedItems() {
+        const selectedIds = [];
+        document.querySelectorAll('.cart-item-checkbox:checked').forEach(checkbox => {
+            selectedIds.push(checkbox.value);
+        });
+
+        if (selectedIds.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để mua.");
+            return;
+        }
+
+        // Gửi yêu cầu AJAX để tạo đơn hàng với các sản phẩm đã chọn
+        fetch('/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cartItemIds: selectedIds })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Đơn hàng đã được tạo thành công!");
+                    location.href = "/orders";
+                } else {
+                    alert("Không thể tạo đơn hàng. Vui lòng thử lại.");
+                }
+            });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+.breadcrumb a {
+    color: #007BFF;
+    text-decoration: none;
+}
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+.flower-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.flower-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.flower-images {
+    flex: 1;
+}
+.flower-images img {
+    border-radius: 8px;
+}
+.thumbnail-images img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.flower-info {
+    flex: 2;
+}
+.flower-info h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+.rating span {
+    color: #FFD700;
+}
+.price {
+    font-size: 1.5rem;
+    color: #E53935;
+}
+.original-price {
+    text-decoration: line-through;
+    color: #757575;
+    margin-left: 10px;
+}
+.discount {
+    color: #4CAF50;
+    margin-left: 10px;
+}
+.promotion ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+.actions {
+    margin-top: 20px;
+}
+.actions label {
+    margin-right: 10px;
+}
+.actions input {
+    width: 50px;
+    text-align: center;
+    margin-right: 10px;
+}
+.actions button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.actions button:hover {
+    background-color: #0056b3;
+}
+.wishlist {
+    background-color: #E53935;
+}
+.wishlist:hover {
+    background-color: #b71c1c;
+}
+.flower-description ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+.flower-reviews {
+    margin-top: 40px;
+}
+.review {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}

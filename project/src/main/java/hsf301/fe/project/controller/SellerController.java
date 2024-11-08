@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/Seller")
 public class SellerController {
@@ -32,9 +31,18 @@ public class SellerController {
         return null;
     }
 
-
     @GetMapping("/home")
-    public String showAdminHome(HttpSession session) {
+    public String showAdminHome(HttpSession session, Model model) {
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/user/login";
+        }
+
+        boolean isAdmin = "ADMIN".equals(loggedInUser.getRole());
+        boolean isSeller = "SELLER".equals(loggedInUser.getRole());
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isSeller", isSeller);
         String accessCheck = checkSellerAccess(session);
         if (accessCheck != null) {
             return accessCheck;
@@ -44,14 +52,35 @@ public class SellerController {
 
     @GetMapping("/flowers")
     public String showFlowers(HttpSession session, Model model) {
+        Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/user/login";
+        }
+
+        boolean isAdmin = "ADMIN".equals(loggedInUser.getRole());
+        boolean isSeller = "SELLER".equals(loggedInUser.getRole());
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isSeller", isSeller);
         String accessCheck = checkSellerAccess(session);
         if (accessCheck != null) {
             return accessCheck;
         }
-        List<Flower> flowers = flowerService.getFlowersBySellerId(((Users) session.getAttribute("loggedInUser")).getId());
+        List<Flower> flowers = flowerService
+                .getFlowersBySellerId(((Users) session.getAttribute("loggedInUser")).getId());
         model.addAttribute("flowers", flowers);
         model.addAttribute("flower", new Flower());
         return "Seller/flowers";
     }
+
+    @GetMapping("/orders")
+    public String showOrders(HttpSession session) {
+        String accessCheck = checkSellerAccess(session);
+        if (accessCheck != null) {
+            return accessCheck;
+        }
+        return "Seller/orders";
+    }
+
 
 }
