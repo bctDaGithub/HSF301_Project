@@ -21,7 +21,7 @@
             <span>|</span>
             <a class="hover:text-blue-500" th:href="@{/user/login}" th:if="${userRole == 'GUEST'}">Đăng nhập</a>
             <a class="hover:text-blue-500" th:href="@{/user/register}" th:if="${userRole == 'GUEST'}">Đăng ký</a>
-            <a class="hover:text-blue-500" href="#" th:if="${userRole != 'GUEST'}"><span th:text="${session.loggedInUser.name}">User</span></a>
+            <a class="hover:text-blue-500" th:href="@{/customer/home}" th:if="${userRole != 'GUEST'}"><span th:text="${session.loggedInUser.name}">User</span></a>
             <a class="hover:text-blue-500" th:href="@{/user/logout}" th:if="${userRole != 'GUEST'}">Đăng xuất</a>
         </div>
     </div>

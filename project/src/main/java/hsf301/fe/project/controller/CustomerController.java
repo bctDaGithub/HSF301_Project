@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Arrays;
@@ -75,7 +75,39 @@ public class CustomerController {
         model.addAttribute("oder", new Order() );
         model.addAttribute("oderFlower", new OrderFlower());
         // Xử lý thanh toán (ví dụ: tạo đơn hàng với các ID sản phẩm đã chọn)
-        return "Customer/checkout";
+        return "order";
     }
+    @GetMapping("/orders")
+    public String showOrders(HttpSession session, Model model) {
+        String accessCheck = checkCustomerAccess(session);
+        if (accessCheck != null) {
+            return accessCheck;
+        }
+        List<Order>  allOrders = orderService.getOrdersByCustomerId(((Users) session.getAttribute("loggedInUser")).getId());
+        List<Order> pendingOrders = allOrders.stream()
+                .filter(order -> "pending".equals(order.getStatus()))
+                .collect(Collectors.toList());
+
+        List<Order> completedOrders = allOrders.stream()
+                .filter(order -> "success".equals(order.getStatus()))
+                .collect(Collectors.toList());
+        model.addAttribute("allOrders", allOrders);
+        model.addAttribute("order", new Order());
+        model.addAttribute("pendingOrders", pendingOrders);
+        model.addAttribute("completedOrders", completedOrders);
+        return "Customer/orders";
+    }
+
+    @GetMapping("/orderDetails/{orderId}")
+    public String getOrderDetails(@PathVariable int orderId, Model model) {
+        Order order = orderService.getOrderById(orderId); // Lấy dữ liệu từ service
+        List<OrderFlower> orderFlowers = orderFlowerService.getOrderFlowersByOrder(order);
+        model.addAttribute("order", order);
+        model.addAttribute("orderFlowers", orderFlowers);
+        model.addAttribute("orderFlower", new OrderFlower());
+        return "Customer/oderDetail"; // Trả về view popup
+    }
+
+
 }
 
