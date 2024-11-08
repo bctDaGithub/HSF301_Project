@@ -14,11 +14,29 @@
     // Gọi hàm lưu trang nhưng không cần update breadcrumb
     saveCurrentPage('Trang chủ');
   </script>
+  <script>
+    function markAsRead(notiId) {
+        fetch('/notifications/mark-as-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+            },
+            body: new URLSearchParams({ notiId: notiId })
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Failed to mark notification as read');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
 </head>
 <body>
 <div th:replace="~{header :: header}"></div>
-<!-- Breadcrumb -->
-<nav class="breadcrumb mb-4" id="breadcrumb-nav"></nav>
 
 <div class="main-content">
 <div class="container" id="product-container">

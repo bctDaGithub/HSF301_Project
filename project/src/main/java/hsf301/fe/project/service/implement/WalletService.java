@@ -1,6 +1,7 @@
 package hsf301.fe.project.service.implement;
 
 import hsf301.fe.project.pojo.Transaction;
+import hsf301.fe.project.pojo.Users;
 import hsf301.fe.project.pojo.Wallet;
 import hsf301.fe.project.repository.TransactionRepository;
 import hsf301.fe.project.repository.WalletRepository;
@@ -35,5 +36,10 @@ public class WalletService implements IWalletService {
         transaction.setTransactionType("Top-up");
         transaction.setStatus("Completed");
         transactionRepository.save(transaction);
+    }
+
+    @Override
+    public void save(Users users) {
+        walletRepository.save(new Wallet(users.getId(), 0L));
     }
 }

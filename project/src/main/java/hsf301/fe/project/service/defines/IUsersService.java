@@ -12,4 +12,5 @@ public interface IUsersService {
     public Users updateUser(Users user);
     public Users authenticateUser(String email, String password);
     public Users findByEmail(String email);
+    public List<Users> getAdminUsers();
 }
