@@ -17,4 +17,6 @@ public interface IUsersRepository extends JpaRepository<Users, Integer> {
     void updateActive(int userId, boolean active);
 
     Users findByEmail(String email);
+
+    List<Users> findByRole(String role);
 }

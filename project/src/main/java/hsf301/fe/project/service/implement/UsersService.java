@@ -76,4 +76,9 @@ public class UsersService implements IUsersService {
     public Users findByEmail(String email) {
         return usersRepository.findByEmail(email);
     }
+
+    @Override
+    public List<Users> getAdminUsers() {
+        return usersRepository.findByRole("ADMIN");
+    }
 }
