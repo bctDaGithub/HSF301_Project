@@ -58,19 +58,42 @@
         .back-link:hover {
             text-decoration: underline;
         }
+        .wallet-info {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+        .wallet-info p {
+            font-size: 16px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Wallet - Add Funds</h1>
-    <form th:action=@{/wallet/add-funds} method="post">
+
+    <!-- Hiển thị thông tin ví -->
+    <div class="wallet-info">
+        <p>Current Balance: <span th:text="${wallet.amount}">0</span> VND</p>
+    </div>
+
+    <!-- Form để gửi yêu cầu nạp tiền -->
+    <form th:action="@{/wallet/add-funds}" method="post">
         <div class="form-group">
             <label for="amount">Enter Amount (VND):</label>
             <input type="number" id="amount" name="amount" min="1000" placeholder="Enter amount in VND" required>
         </div>
         <input type="submit" value="Add Funds">
     </form>
-    <a href="/" class="back-link">Back to Dashboard</a>
+
+    <!-- Liên kết quay lại dashboard -->
+    <a href="/customer/home">
+        <button class="btn btn-primary">
+            <i class="fas fa-wallet"></i> Back
+        </button>
+    </a>
 </div>
 </body>
 </html>
