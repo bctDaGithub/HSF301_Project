@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Result</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Optional: link to any CSS file you need -->
+</head>
+<body>
+<div class="container">
+    <h1>Transaction Result</h1>
+
+    <div th:if="${success}">
+        <p>Your payment was successful!</p>
+        <p>Transaction Reference: <span th:text="${txnRef}"></span></p>
+        <p>Amount: <span th:text="${amount}"></span> VND</p>
+    </div>
+
+    <div th:unless="${success}">
+        <p>Your payment failed. Please try again.</p>
+        <p>Transaction Reference: <span th:text="${txnRef}"></span></p>
+        <p>Attempted Amount: <span th:text="${amount}"></span> VND</p>
+    </div>
+
+    <a href="/wallet/add-funds">Back to Wallet</a>
+</div>
+</body>
+</html>
