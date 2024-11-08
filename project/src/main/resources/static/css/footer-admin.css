@@ -1,0 +1,73 @@
+/* Toàn bộ trang */
+html, body {
+    height: 100%; /* Đảm bảo chiều cao của body và html đủ cho toàn trang */
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Bao bọc toàn bộ nội dung trang */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%; /* Chiều cao tối thiểu của container phải bằng chiều cao của trang */
+}
+
+/* Nội dung của trang */
+.container {
+    flex: 1; /* Nội dung sẽ chiếm không gian còn lại */
+    padding-bottom: 80px; /* Đảm bảo không bị dính vào footer */
+}
+
+/* Footer */
+.admin-footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.admin-footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.admin-footer .footer-content p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #00aaff;
+}
+
+/* Đảm bảo responsive */
+@media (max-width: 768px) {
+    .admin-footer .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-links {
+        margin-top: 10px;
+        flex-direction: column;
+    }
+}

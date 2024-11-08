@@ -17,13 +17,14 @@ public class HomeController {
     private IFlowerService flowerService;
 
     @GetMapping("/showHomePage")
-    public String showHomePage(Model model){
+    public String showHomePage(Model model) {
         List<Flower> flowers = flowerService.getAllFlowers();
         model.addAttribute("flowers", flowers);
         return "home";
     }
+
     @GetMapping("/")
     public String redirectToHome() {
-        return "redirect:/showHomePage"; // Điều hướng đến `/home` hoặc bất kỳ đường dẫn nào bạn muốn
+        return "redirect:/showHomePage";
     }
 }

@@ -89,9 +89,9 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(@RequestParam("email") String email,
-                            @RequestParam("password") String password,
-                            @RequestParam(value = "referer", required = false) String referer,
-                            HttpSession session, Model model ) {
+            @RequestParam("password") String password,
+            @RequestParam(value = "referer", required = false) String referer,
+            HttpSession session, Model model) {
         Users user = usersService.authenticateUser(email, password);
         if (user != null) {
             if (user.isActive()) {
@@ -102,7 +102,7 @@ public class UserController {
                 if ("ADMIN".equals(role)) {
                     return referer != null ? "redirect:" + referer : "redirect:/admin/home";
                 } else if ("CUSTOMER".equals(role)) {
-                    return "redirect:/home";
+                    return "redirect:/showHomePage";
                 } else if ("SELLER".equals(role)) {
                     return referer != null ? "redirect:" + referer : "redirect:/Seller/home";
                 } else {
@@ -183,52 +183,66 @@ public class UserController {
 
     @GetMapping("/profile")
     public String showUserProfile(HttpSession session, Model model) {
-        
         Users loggedInUser = (Users) session.getAttribute("loggedInUser");
-        boolean isAdmin = loggedInUser.getRole().equals("ADMIN");
-        model.addAttribute("isAdmin", isAdmin);
+
         if (loggedInUser == null) {
             return "redirect:/user/login";
         }
+
+        boolean isAdmin = "ADMIN".equals(loggedInUser.getRole());
+        boolean isSeller = "SELLER".equals(loggedInUser.getRole());
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isSeller", isSeller);
         model.addAttribute("user", loggedInUser);
+
         return "user/profile";
     }
 
     @GetMapping("/edit-profile")
     public String showEditProfileForm(HttpSession session, Model model) {
         Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+
         if (loggedInUser == null) {
             return "redirect:/user/login";
         }
+
+        boolean isAdmin = "ADMIN".equals(loggedInUser.getRole());
+        boolean isSeller = "SELLER".equals(loggedInUser.getRole());
+        model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isSeller", isSeller);
         model.addAttribute("user", loggedInUser);
         return "user/editProfile";
     }
 
     @PostMapping("/edit-profile")
     public String editProfile(@ModelAttribute("user") Users user,
-                              @RequestParam(value = "currentPassword", required = false) String currentPassword,
-                              @RequestParam(value = "newPassword", required = false) String newPassword,
-                              @RequestParam(value = "confirmNewPassword", required = false) String confirmNewPassword,
-                              HttpSession session, Model model) {
+            @RequestParam(value = "currentPassword", required = false) String currentPassword,
+            @RequestParam(value = "newPassword", required = false) String newPassword,
+            @RequestParam(value = "confirmNewPassword", required = false) String confirmNewPassword,
+            HttpSession session, Model model) {
         Users loggedInUser = (Users) session.getAttribute("loggedInUser");
-    
+
         if (loggedInUser != null) {
             // Kiểm tra mật khẩu hiện tại nếu muốn đổi mật khẩu
             if ((newPassword != null && !newPassword.isEmpty()) ||
-                (confirmNewPassword != null && !confirmNewPassword.isEmpty())) {
+                    (confirmNewPassword != null && !confirmNewPassword.isEmpty())) {
                 if (!passwordEncoder.matches(currentPassword, loggedInUser.getPassword())) {
                     model.addAttribute("updateError", "Current password is incorrect.");
                     return "user/editProfile";
                 }
-    
+
                 if (!newPassword.equals(confirmNewPassword)) {
                     model.addAttribute("updateError", "New passwords do not match.");
                     return "user/editProfile";
                 }
-    
+
                 loggedInUser.setPassword(passwordEncoder.encode(newPassword));
             }
-    
+
+            boolean isAdmin = "ADMIN".equals(loggedInUser.getRole());
+            boolean isSeller = "SELLER".equals(loggedInUser.getRole());
+            model.addAttribute("isAdmin", isAdmin);
+            model.addAttribute("isSeller", isSeller);
             // Cập nhật thông tin người dùng
             loggedInUser.setName(user.getName());
             loggedInUser.setPhone(user.getPhone());
