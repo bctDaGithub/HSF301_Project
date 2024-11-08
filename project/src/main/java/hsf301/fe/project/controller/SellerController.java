@@ -54,4 +54,14 @@ public class SellerController {
         return "Seller/flowers";
     }
 
+    @GetMapping("/orders")
+    public String showOrders(HttpSession session) {
+        String accessCheck = checkSellerAccess(session);
+        if (accessCheck != null) {
+            return accessCheck;
+        }
+        return "Seller/orders";
+    }
+
+
 }

@@ -1,33 +1,122 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="">
+<!DOCTYPE html>
+<html lang="vi">
 <head>
-  <title>Flower Detail</title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+    Chi tiết Hoa - Flower Detail
+  </title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" th:href="@{/css/flower-detail.css}">
   <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" th:href="@{/css/detail.css}">
 </head>
 <body>
+<div th:replace="~{header :: header}"></div>
+<div class="flower-page">
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb mb-4">
+    <a href="#">Trang chủ</a> /
+    <a href="#">Hoa</a> /
+    <a href="#">Chi tiết hoa</a> / Chi tiết
+  </nav>
 
-<div class="container">
   <div class="flower-details">
-    <div class="flower-image">
-      <img th:src="${flower.imageUrl}" alt="A vibrant yellow tulip in full bloom with green leaves and a clear blue sky in the background" width="400" height="400">
+    <!-- Hình ảnh hoa -->
+    <div class="flower-images">
+      <div class="main-image mb-4">
+        <img th:src="${flower.imageUrl}" alt="Hình ảnh của hoa" class="w-full h-auto" height="600" width="600"/>
+      </div>
+      <div class="thumbnail-images flex">
+        <img th:src="${flower.imageUrl}" alt="Thumbnail 1 của hoa" height="100" width="100"/>
+        <img th:src="${flower.imageUrl}" alt="Thumbnail 2 của hoa" height="100" width="100"/>
+        <img th:src="${flower.imageUrl}" alt="Thumbnail 3 của hoa" height="100" width="100"/>
+      </div>
     </div>
+
+    <!-- Thông tin hoa -->
     <div class="flower-info">
-      <h2>ID: <span th:text="${flower.id}"></span></h2>
-      <p><strong>Name:</strong> <span th:text="${flower.name}"></span></p>
-      <p><strong>Type:</strong> <span th:text="${flower.type}"></span></p>
-      <p><strong>Quantity:</strong> <span th:text="${flower.quantity}"></span></p>
-      <p><strong>Condition:</strong> <span th:text="${flower.condition}"></span></p>
-      <p class="price"><strong>Price:</strong> $<span th:text="${flower.price}"></span></p>
+      <h1>
+        <span th:text="${flower.name}">Tên hoa</span>
+      </h1>
+      <p><strong>ID:</strong> <span th:text="${flower.id}">123456</span></p>
+      <p><strong>Loại:</strong> <span th:text="${flower.type}">Loại hoa</span></p>
+      <p><strong>Số lượng:</strong> <span th:text="${flower.quantity}">50</span></p>
+      <p><strong>Tình trạng:</strong> <span th:text="${flower.condition}">Còn hàng</span></p>
+      <p class="price"><span th:text="${flower.price}">420,000₫</span>
+        <span class="original-price">500,000₫</span>
+        <span class="discount">-16%</span>
+      </p>
+
+      <!-- Khuyến mãi -->
+      <div class="promotion mb-4">
+        <h3>Khuyến mãi:</h3>
+        <ul>
+          <li>Giảm 10% khi mua từ 2 sản phẩm</li>
+          <li>Miễn phí vận chuyển cho đơn hàng trên 500,000₫</li>
+          <li>Nhận ngay quà tặng trị giá 100,000₫</li>
+        </ul>
+      </div>
+
+      <!-- Chọn số lượng và hành động -->
+      <div class="actions mb-4">
+        <form th:action="@{/cartItem/add}" th:object="${cartItem}" method="post">
+          <label for="quantity">Số lượng:</label>
+          <input id="quantity" name="quantity" type="number" min="1" max="10" value="1" th:field="*{quantity}" />
+
+          <!-- Input hidden để gửi flowerId hoặc productId -->
+          <input type="hidden" id="unitPrice" name="unitPrice" th:value="${flower.price}" />
+          <input type="hidden" th:name="flowerId" th:value="${flower.id}" />
+          <!-- Nút Mua ngay -->
+          <button type="button" class="buy-now">Mua ngay</button>
+
+          <!-- Nút Thêm vào giỏ hàng và Thêm vào yêu thích -->
+          <button type="submit" class="add-to-cart" onclick="addToCart()">Thêm vào giỏ hàng</button>
+          <button type="button" class="wishlist" onclick="addToWishlist()">❤ Thêm vào yêu thích</button>
+        </form>
+      </div>
+
+
+      <!-- Mô tả hoa -->
+      <div class="flower-description">
+        <h3>Thông tin hoa:</h3>
+        <p><span th:text="${flower.name}">Mô tả chi tiết về hoa</span></p>
+        <ul>
+          <li><strong>Tần số rung:</strong> 42,000 lần/phút</li>
+          <li><strong>Chế độ:</strong> 5 chế độ làm sạch</li>
+          <li><strong>Đặc điểm:</strong> Thiết kế gọn nhẹ, dễ dàng sử dụng và vệ sinh</li>
+        </ul>
+      </div>
     </div>
   </div>
-  <div class="actions">
-    <a th:href="@{/flowers/edit/{id}(id=${flower.id})}"><i class="fas fa-edit"></i> Edit</a>
-    <a th:href="@{/flowers}"><i class="fas fa-arrow-left"></i> Back to List</a>
+
+  <!-- Đánh giá hoa -->
+  <div class="flower-reviews" id="reviews">
+    <h2 class="text-2xl font-bold mb-4">Đánh giá của khách hàng</h2>
+    <div class="review mb-4">
+      <p><strong>Người dùng A:</strong> ⭐⭐⭐⭐⭐ Hoa rất đẹp và tươi mới, dịch vụ tốt!</p>
+    </div>
+    <div class="review mb-4">
+      <p><strong>Người dùng B:</strong> ⭐⭐⭐⭐ Hoa đúng như hình ảnh, giao hàng nhanh chóng.</p>
+    </div>
+    <div class="review mb-4">
+      <p><strong>Người dùng C:</strong> ⭐⭐⭐⭐⭐ Đẹp, thơm, rất hài lòng.</p>
+    </div>
   </div>
 </div>
-
+<div th:replace="footer :: footer"></div>
 </body>
+<script>
+  function addToCart() {
+    const quantity = document.getElementById("quantity").value;
+    alert(`Đã thêm ${quantity} sản phẩm vào giỏ hàng!`);
+    // Gửi yêu cầu AJAX để thêm vào giỏ hàng
+  }
+
+  function addToWishlist() {
+    alert("Sản phẩm đã được thêm vào danh sách yêu thích!");
+    // Gửi yêu cầu AJAX để thêm vào danh sách yêu thích
+  }
+</script>
 </html>
