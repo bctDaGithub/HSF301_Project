@@ -29,8 +29,8 @@ public class Order {
     private Users customer;
 
     @ManyToOne
-    @JoinColumn(name = "shipper_id")
-    private Users shipper;
+    @JoinColumn(name = "seller_id")
+    private Users seller;
 
     @OneToMany(mappedBy = "order")
     private List<OrderFlower> orderFlowers; 

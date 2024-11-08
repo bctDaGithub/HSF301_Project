@@ -191,4 +191,23 @@ public class WalletController {
         model.addAttribute("amount", amount);
         return "user/payment-result";
     }
+    @GetMapping()
+    public String getWalletByUserId(HttpSession session, Model model) {
+        Users user = (Users) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/user/login";  // Nếu người dùng chưa đăng nhập, chuyển hướng đến trang login
+        }
+
+        // Lấy ví của người dùng
+        Wallet wallet = walletService.getWalletByUserId(user.getId());
+        if (wallet == null) {
+            model.addAttribute("message", "Không tìm thấy ví của bạn.");
+            return "user/error";  // Nếu ví không tồn tại, hiển thị lỗi
+        }
+
+        // Thêm thông tin ví vào model để hiển thị trên giao diện
+        model.addAttribute("wallet", wallet);
+
+        return "user/wallet";  // Chuyển hướng đến trang hiển thị thông tin ví
+    }
 }
