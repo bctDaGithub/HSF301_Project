@@ -1,7 +1,10 @@
 package hsf301.fe.project.service.implement;
 
+import hsf301.fe.project.pojo.Cart;
 import hsf301.fe.project.pojo.Users;
+import hsf301.fe.project.repository.CartRepository;
 import hsf301.fe.project.repository.IUsersRepository;
+import hsf301.fe.project.service.defines.ICartService;
 import hsf301.fe.project.service.defines.IUsersService;
 import jakarta.transaction.Transactional;
 
@@ -19,6 +22,7 @@ public class UsersService implements IUsersService {
 
     @Autowired
     private IUsersRepository usersRepository;
+    private CartRepository cartRepository;
 
     @Override
     @Transactional
@@ -49,6 +53,9 @@ public class UsersService implements IUsersService {
         users.setActive(true);
         LocalDate today = LocalDate.now();
         users.setRegisterDate(Date.valueOf(today));
+//        Cart cart = new Cart();
+//        cart.setCustomer(users);
+//        cartRepository.save(cart);
         return usersRepository.save(users);
     }
 
