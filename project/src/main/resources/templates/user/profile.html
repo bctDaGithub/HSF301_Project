@@ -9,6 +9,7 @@
 <body>
 <div class="container">
     <h2>Profile</h2>
+    <a href="#" th:href="@{/user/logout}" class="btn btn-primary">Logout</a>
     <p><strong>Name:</strong> <span th:text="${user.name}"></span></p>
     <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
     <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
