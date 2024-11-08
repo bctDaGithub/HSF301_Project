@@ -42,4 +42,7 @@ public class WalletService implements IWalletService {
     public void save(Users users) {
         walletRepository.save(new Wallet(users.getId(), 0L));
     }
+    public void save1(Wallet wallet){
+        walletRepository.save(wallet);
+    }
 }
