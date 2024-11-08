@@ -5,11 +5,20 @@
     <title>Giỏ Hàng</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/cart.css}">
+    <script type="module">
+        import { saveCurrentPage, updateBreadcrumb } from '/js/breadcrumbService.js';
+
+        saveCurrentPage('Giỏ hàng');
+        window.addEventListener('DOMContentLoaded', updateBreadcrumb);
+        console.log(localStorage.getItem('historyLinks'));
+    </script>
 </head>
 <body>
 <div class="cart-container">
+    <nav class="breadcrumb mb-4" id="breadcrumb-nav"></nav>
     <h1>Giỏ Hàng</h1>
 
+    <!-- Tiêu đề các cột trong giỏ hàng -->
     <div class="cart-header">
         <div class="cart-item-select"><input type="checkbox" id="select-all" onclick="toggleSelectAll(this)"></div>
         <div class="cart-item-name">Sản phẩm</div>
@@ -20,46 +29,88 @@
     </div>
 
     <!-- Hiển thị danh sách sản phẩm trong giỏ hàng -->
-    <form th:action="@{/order/checkout}" method="post">
-        <div th:each="cartItem : ${cartItems}" class="cart-item">
-            <div class="cart-item-select">
-                <input type="checkbox" name="selectedItems" th:value="${cartItem.id}" class="cart-item-checkbox">
-            </div>
-            <div class="cart-item-name">
-                <img th:src="@{${cartItem.flower.imageUrl}}" alt="Sản phẩm">
-                <span th:text="${cartItem.flower.name}">Tên sản phẩm</span>
-            </div>
-
-            <div class="cart-item-quantity">
-                <div class="quantity-controls">
-                    <button th:onclick="'updateQuantity(' + ${cartItem.id} + ', -1)'" type="button">-</button>
-                    <input type="number" th:value="${cartItem.quantity}" min="1" readonly>
-                    <button th:onclick="'updateQuantity(' + ${cartItem.id} + ', 1)'" type="button">+</button>
-                </div>
-            </div>
-
-            <div class="cart-item-price" th:text="${#numbers.formatDecimal(cartItem.unitPrice, 1, 'COMMA', 2, 'POINT')}">250,000₫</div>
-            <div class="cart-item-total" th:text="${#numbers.formatDecimal(cartItem.totalPrice, 1, 'COMMA', 2, 'POINT')}">250,000₫</div>
-
-            <div class="cart-item-action">
-                <a href="#" th:href="@{/cart/remove/{id}(id=${cartItem.id})}" class="remove-link">Xóa</a>
-            </div>
+    <div th:each="cartItem : ${cartItems}" class="cart-item">
+        <div class="cart-item-select">
+            <input type="checkbox" name="selectedItems" th:value="${cartItem.id}" class="cart-item-checkbox">
+        </div>
+        <div class="cart-item-name">
+            <img th:src="@{${cartItem.flower.imageUrl}}" alt="Sản phẩm">
+            <span th:text="${cartItem.flower.name}">Tên sản phẩm</span>
         </div>
 
-        <!-- Tổng kết giỏ hàng -->
-        <div class="cart-summary">
-            <p>Tổng tiền: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">0₫</span></p>
-            <input type="hidden" name="totalPrice" th:value="${totalPrice}">
-            <button class="checkout-button" type="submit">Mua hàng</button>
+        <div class="cart-item-quantity">
+            <div class="quantity-controls">
+                <button th:onclick="'updateQuantity(' + ${cartItem.id} + ', -1)'" type="button">-</button>
+                <input type="number" th:value="${cartItem.quantity}" min="1" readonly>
+                <button th:onclick="'updateQuantity(' + ${cartItem.id} + ', 1)'" type="button">+</button>
+            </div>
+
         </div>
-    </form>
+
+        <div class="cart-item-price" th:text="${#numbers.formatDecimal(cartItem.unitPrice, 1, 'COMMA', 2, 'POINT')}">250,000₫</div>
+        <div class="cart-item-total" th:text="${#numbers.formatDecimal(cartItem.totalPrice, 1, 'COMMA', 2, 'POINT')}">250,000₫</div>
+
+        <div class="cart-item-action">
+            <a href="#" th:href="@{/cart/remove/{id}(id=${cartItem.id})}" class="remove-link">Xóa</a>
+        </div>
+    </div>
+
+    <!-- Tổng kết giỏ hàng -->
+    <div class="cart-summary" th:action="@{/checkout}" method="post">
+        <p>Tổng tiền sản phẩm đã chọn: <span id="selected-total">0₫</span></p>
+        <p>Tổng tiền: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'COMMA', 2, 'POINT')}">0₫</span></p>
+        <input type="hidden" name="cartItemIds" id="selected-cart-items" value="">
+        <button type="button" class="checkout-button" onclick="submitCheckoutForm()">Mua hàng</button>
+    </div>
+
 </div>
 
 <script>
     // Hàm chọn hoặc bỏ chọn tất cả các checkbox
     function toggleSelectAll(selectAllCheckbox) {
         const checkboxes = document.querySelectorAll('.cart-item-checkbox');
-        checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+        calculateSelectedTotal();
+    }
+
+    // Hàm tính tổng tiền của các sản phẩm đã chọn
+    function calculateSelectedTotal() {
+        let total = 0;
+        document.querySelectorAll('.cart-item-checkbox:checked').forEach(checkbox => {
+            const cartItem = checkbox.closest('.cart-item');
+            const itemTotalPrice = parseFloat(cartItem.querySelector('.cart-item-total').textContent.replace(/[₫,]/g, ''));
+            total += itemTotalPrice;
+        });
+        document.getElementById('selected-total').textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
+    }
+
+    // Thêm sự kiện 'change' cho các checkbox của từng sản phẩm
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.cart-item-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', calculateSelectedTotal);
+        });
+    });
+
+    // Hàm gửi các sản phẩm đã chọn để thanh toán
+    function submitCheckoutForm() {
+        const selectedIds = [];
+        document.querySelectorAll('.cart-item-checkbox:checked').forEach(checkbox => {
+            selectedIds.push(checkbox.value);
+        });
+
+        if (selectedIds.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để mua.");
+            return;
+        }
+
+        // Cập nhật các ID đã chọn vào trường hidden trong form
+        document.getElementById('selected-cart-items').value = selectedIds.join(',');
+
+        // Gửi form
+        document.getElementById('cart-summary').submit();
     }
 </script>
 </body>

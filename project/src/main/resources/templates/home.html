@@ -8,6 +8,12 @@
   <link rel="stylesheet" th:href="@{/css/styles.css}">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+  <script type="module">
+    import { saveCurrentPage,} from '/js/breadcrumbService.js';
+
+    // Gọi hàm lưu trang nhưng không cần update breadcrumb
+    saveCurrentPage('Trang chủ');
+  </script>
   <script>
     function markAsRead(notiId) {
         fetch('/notifications/mark-as-read', {
@@ -27,64 +33,68 @@
             console.error('Error:', error);
         });
     }
-  </script>
+</script>
 </head>
 <body>
 <div th:replace="~{header :: header}"></div>
 
 <div class="main-content">
-  <div class="container" id="product-container">
-    <!-- Lặp qua danh sách sản phẩm và hiển thị từng sản phẩm -->
-    <div th:each="flower : ${flowers}" class="product-card">
-      <a th:href="@{/flowers/{id}(id=${flower.id})}">
-        <img th:src="@{${flower.imageUrl}}" th:alt="${flower.name}" width="200" height="200"/>
-        <h3 th:text="${flower.name}"></h3>
-        <p th:text="${flower.condition}"></p>
-        <div class="price" th:text="${flower.price} + ' VND'"></div>
-      </a>
-    </div>
-  </div>
-
-  <!-- Nút Xem Ví -->
-  <div class="sidebar">
-    <h2>Ví của bạn</h2>
-    <div class="ad">
-      <a href="/wallet">
-        <button class="btn btn-primary">
-          <i class="fas fa-wallet"></i> Xem ví
-        </button>
-      </a>
-    </div>
-  </div>
-
-
-
-  <div class="sidebar">
-    <h2>Quảng cáo</h2>
-    <div class="ad">
-      <img alt="Ad 1 - A beautiful flower arrangement" height="200" src="https://storage.googleapis.com/a1aa/image/ciSABHnLiu5nOlmTdNTMs8Mpsg7v4tNx8yFQ55Pa7fomejuTA.jpg" width="300"/>
-      <h3>Ad 1</h3>
-      <p>Beautiful flower arrangements for all occasions.</p>
-    </div>
-    <div class="ad">
-      <img alt="Ad 2 - A stunning bouquet of mixed flowers" height="200" src="https://storage.googleapis.com/a1aa/image/nQmKONkYihZmL11a6g9RHezkeaf7XojHouKiRHEL9kHX6HdnA.jpg" width="300"/>
-      <h3>Ad 2</h3>
-      <p>Get the best deals on mixed flower bouquets.</p>
-    </div>
-    <h2>Shop nổi tiếng</h2>
-    <div class="shop">
-      <img alt="Shop 1 - A popular flower shop" height="200" src="https://storage.googleapis.com/a1aa/image/lhO5AsXUz6q0INB29PKKMkvLtanqQGNquNeFtIFMQBDnejuTA.jpg" width="300"/>
-      <h3>Shop 1</h3>
-      <p>One of the most popular flower shops in town.</p>
-    </div>
-    <div class="shop">
-      <img alt="Shop 2 - A well-known flower shop" height="200" src="https://storage.googleapis.com/a1aa/image/IiHuifBTTKRdUy6bN8W6gbIyOz84F4b9epLMFY7YRu7Q9juTA.jpg" width="300"/>
-      <h3>Shop 2</h3>
-      <p>Well-known for its beautiful flower arrangements.</p>
-    </div>
+<div class="container" id="product-container">
+  <!-- Lặp qua danh sách sản phẩm và hiển thị từng sản phẩm -->
+  <div th:each="flower : ${flowers}" class="product-card">
+    <a th:href="@{/flowers/{id}(id=${flower.id})}">
+    <img th:src="@{${flower.imageUrl}}" th:alt="${flower.name}" width="200" height="200"/>
+    <h3 th:text="${flower.name}"></h3>
+    <p th:text="${flower.condition}"></p>
+    <div class="price" th:text="${flower.price} + ' VND'"></div>
+    </a>
   </div>
 </div>
-
+<div class="sidebar">
+  <h2>
+    Quảng cáo
+  </h2>
+  <div class="ad">
+    <img alt="Ad 1 - A beautiful flower arrangement" height="200" src="https://storage.googleapis.com/a1aa/image/ciSABHnLiu5nOlmTdNTMs8Mpsg7v4tNx8yFQ55Pa7fomejuTA.jpg" width="300"/>
+    <h3>
+      Ad 1
+    </h3>
+    <p>
+      Beautiful flower arrangements for all occasions.
+    </p>
+  </div>
+  <div class="ad">
+    <img alt="Ad 2 - A stunning bouquet of mixed flowers" height="200" src="https://storage.googleapis.com/a1aa/image/nQmKONkYihZmL11a6g9RHezkeaf7XojHouKiRHEL9kHX6HdnA.jpg" width="300"/>
+    <h3>
+      Ad 2
+    </h3>
+    <p>
+      Get the best deals on mixed flower bouquets.
+    </p>
+  </div>
+  <h2>
+    Shop nổi tiếng
+  </h2>
+  <div class="shop">
+    <img alt="Shop 1 - A popular flower shop" height="200" src="https://storage.googleapis.com/a1aa/image/lhO5AsXUz6q0INB29PKKMkvLtanqQGNquNeFtIFMQBDnejuTA.jpg" width="300"/>
+    <h3>
+      Shop 1
+    </h3>
+    <p>
+      One of the most popular flower shops in town.
+    </p>
+  </div>
+  <div class="shop">
+    <img alt="Shop 2 - A well-known flower shop" height="200" src="https://storage.googleapis.com/a1aa/image/IiHuifBTTKRdUy6bN8W6gbIyOz84F4b9epLMFY7YRu7Q9juTA.jpg" width="300"/>
+    <h3>
+      Shop 2
+    </h3>
+    <p>
+      Well-known for its beautiful flower arrangements.
+    </p>
+  </div>
+</div>
+</div>
 <div th:replace="footer :: footer"></div>
 </body>
 </html>

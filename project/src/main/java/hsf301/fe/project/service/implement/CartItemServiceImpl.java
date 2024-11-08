@@ -8,7 +8,9 @@ import hsf301.fe.project.service.defines.IFlowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartItemServiceImpl implements ICartItemService {
@@ -43,5 +45,15 @@ public class CartItemServiceImpl implements ICartItemService {
     @Override
     public List<CartItem> getCartItemsByCartId(int cartId) {
         return cartItemRepository.findAllByCartId(cartId);
+    }
+
+    @Override
+    public List<CartItem> getCartItemsById(List<Integer> cartItemIds) {
+        List<CartItem> cartItems = new ArrayList<>();
+        for (Integer cartItemId : cartItemIds) {
+            Optional<CartItem> cartItem = cartItemRepository.findById(cartItemId);
+            cartItems.add(cartItem.orElse(null));
+        }
+        return cartItems;
     }
 }

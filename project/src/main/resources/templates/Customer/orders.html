@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .tab-container { display: flex; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        .tab { padding: 10px 20px; cursor: pointer; color: #555; border-bottom: 3px solid transparent; }
+        .tab.active { color: #ff5722; border-bottom: 3px solid #ff5722; font-weight: bold; }
+        .tab-content { display: none; padding: 20px; }
+        .tab-content.active { display: block; }
+        .empty-order { font-size: 18px; color: #888; margin-top: 50px; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<div class="container mx-auto mt-10">
+    <div class="tab-container">
+        <div class="tab active" onclick="showTab('all')">Tất cả</div>
+        <div class="tab" onclick="showTab('pending')">Chờ thanh toán</div>
+        <div class="tab" onclick="showTab('completed')">Hoàn thành</div>
+        <div class="tab" onclick="showTab('cancelled')">Đã hủy</div>
+    </div>
+
+    <!-- Nội dung tab Tất cả -->
+    <div id="all" class="tab-content active">
+        <div th:if="${allOrders != null and allOrders.isEmpty()}" class="empty-order">
+            <p>Chưa có đơn hàng</p>
+        </div>
+        <div th:if="${allOrders != null}" th:each="order : ${allOrders}" class="bg-white p-4 rounded shadow mb-4">
+            <a th:href="@{/customer/orderDetails/{orderId}(orderId=${order.orderId})}" class="block text-blue-500 hover:underline">
+                Đơn hàng ID: <span th:text="${order.orderId}"></span> - Tổng giá: <span th:text="${order.totalPrice}">0</span> - Trạng thái: <span th:text="${order.status}"></span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nội dung tab Chờ thanh toán -->
+    <div id="pending" class="tab-content">
+        <div th:if="${pendingOrders != null and pendingOrders.isEmpty()}" class="empty-order">
+            <p>Chưa có đơn hàng chờ thanh toán</p>
+        </div>
+        <div th:if="${pendingOrders != null}" th:each="order : ${pendingOrders}" class="bg-white p-4 rounded shadow mb-4">
+            <a th:href="@{/customer/orderDetails/{orderId}(orderId=${order.orderId})}" class="block text-blue-500 hover:underline">
+                Đơn hàng ID: <span th:text="${order.orderId}"></span> - Tổng giá: <span th:text="${order.totalPrice}">0</span> - Trạng thái: <span th:text="${order.status}"></span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nội dung tab Hoàn thành -->
+    <div id="completed" class="tab-content">
+        <div th:if="${completedOrders != null and completedOrders.isEmpty()}" class="empty-order">
+            <p>Chưa có đơn hàng hoàn thành</p>
+        </div>
+        <div th:if="${completedOrders != null}" th:each="order : ${completedOrders}" class="bg-white p-4 rounded shadow mb-4">
+            <a th:href="@{/customer/orderDetails/{orderId}(orderId=${order.orderId})}" class="block text-blue-500 hover:underline">
+                Đơn hàng ID: <span th:text="${order.orderId}"></span> - Tổng giá: <span th:text="${order.totalPrice}">0</span> - Trạng thái: <span th:text="${order.status}"></span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Nội dung tab Đã hủy -->
+<!--    <div id="cancelled" class="tab-content">-->
+<!--        <div th:if="${cancelledOrders != null and cancelledOrders.isEmpty()}" class="empty-order">-->
+<!--            <p>Chưa có đơn hàng đã hủy</p>-->
+<!--        </div>-->
+<!--        <div th:if="${cancelledOrders != null}" th:each="order : ${cancelledOrders}" class="bg-white p-4 rounded shadow mb-4">-->
+<!--            <a th:href="@{/orderDetails/{orderId}(orderId=${order.orderId})}" class="block text-blue-500 hover:underline">-->
+<!--                Đơn hàng ID: <span th:text="${order.orderId}"></span> - Tổng giá: <span th:text="${order.totalPrice}">0</span> - Trạng thái: <span th:text="${order.status}"></span>-->
+<!--            </a>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+
+<script>
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(function(content) {
+            content.classList.remove('active');
+        });
+        document.querySelectorAll('.tab').forEach(function(tab) {
+            tab.classList.remove('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
