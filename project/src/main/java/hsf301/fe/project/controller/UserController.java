@@ -4,6 +4,7 @@ import hsf301.fe.project.pojo.Users;
 import hsf301.fe.project.service.defines.IEmailService;
 import hsf301.fe.project.service.defines.IUsersService;
 import hsf301.fe.project.service.defines.IVerificationService;
+import hsf301.fe.project.service.defines.IWalletService;
 import hsf301.fe.project.utils.CodeGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +23,8 @@ public class UserController {
     private IUsersService usersService;
     @Autowired
     private IEmailService emailService;
+    @Autowired
+    private IWalletService walletService;
     @Autowired
     private IVerificationService verificationService;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -71,7 +74,8 @@ public class UserController {
 
         if (verified) {
             user.setActive(true);
-            usersService.createNewUsers(user);
+            Users users1=usersService.createNewUsers(user);
+            walletService.save(users1);
             model.addAttribute("verificationSuccess", "Account successfully verified! Please log in.");
             return "user/verificationSuccess"; // Redirect to a success page
         } else {

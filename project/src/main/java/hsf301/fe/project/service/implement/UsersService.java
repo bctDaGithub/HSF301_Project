@@ -6,6 +6,7 @@ import hsf301.fe.project.repository.CartRepository;
 import hsf301.fe.project.repository.IUsersRepository;
 import hsf301.fe.project.service.defines.ICartService;
 import hsf301.fe.project.service.defines.IUsersService;
+import hsf301.fe.project.service.defines.IWalletService;
 import jakarta.transaction.Transactional;
 
 import java.sql.Date;
@@ -22,7 +23,9 @@ public class UsersService implements IUsersService {
 
     @Autowired
     private IUsersRepository usersRepository;
+    @Autowired
     private CartRepository cartRepository;
+
 
     @Override
     @Transactional
@@ -56,6 +59,7 @@ public class UsersService implements IUsersService {
 //        Cart cart = new Cart();
 //        cart.setCustomer(users);
 //        cartRepository.save(cart);
+
         return usersRepository.save(users);
     }
 
