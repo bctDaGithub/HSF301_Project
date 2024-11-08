@@ -2,11 +2,16 @@ package hsf301.fe.project.controller;
 
 import hsf301.fe.project.pojo.Users;
 import hsf301.fe.project.service.defines.IEmailService;
+import hsf301.fe.project.service.defines.INotificationService;
 import hsf301.fe.project.service.defines.IUsersService;
 import hsf301.fe.project.service.defines.IVerificationService;
+import hsf301.fe.project.service.defines.IWalletService;
 import hsf301.fe.project.utils.CodeGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,7 +28,11 @@ public class UserController {
     @Autowired
     private IEmailService emailService;
     @Autowired
+    private IWalletService walletService;
+    @Autowired
     private IVerificationService verificationService;
+    @Autowired
+    private INotificationService iNotificationService;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping("/register")
@@ -71,7 +80,14 @@ public class UserController {
 
         if (verified) {
             user.setActive(true);
-            usersService.createNewUsers(user);
+             Users users1=usersService.createNewUsers(user);
+           walletService.save(users1);
+            List<Users> list = usersService.getAdminUsers();
+            for (Users admin : list) {
+            iNotificationService.addNewNotification("New User Register", user.getName() + " has access to the System, check it out!", admin);
+                
+            }
+
             model.addAttribute("verificationSuccess", "Account successfully verified! Please log in.");
             return "user/verificationSuccess"; // Redirect to a success page
         } else {
@@ -89,20 +105,24 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(@RequestParam("email") String email,
-            @RequestParam("password") String password,
-            @RequestParam(value = "referer", required = false) String referer,
-            HttpSession session, Model model) {
+                            @RequestParam("password") String password,
+                            @RequestParam(value = "referer", required = false) String referer,
+                            HttpSession session, Model model) {
         Users user = usersService.authenticateUser(email, password);
         if (user != null) {
             if (user.isActive()) {
                 session.setAttribute("loggedInUser", user);
                 String role = user.getRole();
+                session.setAttribute("isAdmin", "ADMIN".equals(role));
+                session.setAttribute("isCustomer", "CUSTOMER".equals(role));
+                session.setAttribute("isSeller", "SELLER".equals(role));
+
                 referer = null;
                 // Navigate based on role
                 if ("ADMIN".equals(role)) {
                     return referer != null ? "redirect:" + referer : "redirect:/admin/home";
                 } else if ("CUSTOMER".equals(role)) {
-                    return referer != null ? "redirect:" + referer : "redirect:/customer/home";
+                    return referer != null ? "redirect:" + referer : "redirect:/showHomePage";
                 } else if ("SELLER".equals(role)) {
                     return referer != null ? "redirect:" + referer : "redirect:/Seller/home";
                 } else {
@@ -223,7 +243,6 @@ public class UserController {
         Users loggedInUser = (Users) session.getAttribute("loggedInUser");
 
         if (loggedInUser != null) {
-            // Kiểm tra mật khẩu hiện tại nếu muốn đổi mật khẩu
             if ((newPassword != null && !newPassword.isEmpty()) ||
                     (confirmNewPassword != null && !confirmNewPassword.isEmpty())) {
                 if (!passwordEncoder.matches(currentPassword, loggedInUser.getPassword())) {
@@ -257,3 +276,6 @@ public class UserController {
     }
 
 }
+
+
+
