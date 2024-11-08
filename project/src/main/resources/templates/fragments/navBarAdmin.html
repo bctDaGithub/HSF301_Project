@@ -1,0 +1,49 @@
+<!-- fragments/navBarAdmin.html -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+<div th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <!-- Navbar brand with logo -->
+            <a class="navbar-brand d-flex align-items-center" href="/admin/home" style="display: flex; align-items: center;">
+                <img src="/images/logo.png" alt="Admin Logo" style="max-height: 40px; width: auto; margin-right: 10px;">
+                Admin Panel
+            </a>
+
+            <!-- Toggle button for small screens -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto" style="margin-left: auto !important;"> <!-- Ensure right-aligned items -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/showHomePage}">
+                            <i class="bi bi-house-door-fill"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/dashboard">
+                            <i class="bi bi-people-fill"></i> Manage Users
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Navbar items for profile and logout (aligned to the right) -->
+                <ul class="navbar-nav ms-auto" style="margin-left: auto !important;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/profile">
+                            <i class="bi bi-person-circle"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="/user/logout">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>

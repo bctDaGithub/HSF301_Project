@@ -1,0 +1,95 @@
+<div th:fragment="header"
+     th:with="userRole=${session.loggedInUser != null ? session.loggedInUser.getRole() : 'GUEST'}">
+
+    <div class="header">
+        <h1>Chợ Hoa</h1>
+        <div class="auth-buttons">
+            <!-- Hiển thị nếu người dùng chưa đăng nhập -->
+            <div th:if="${userRole == 'GUEST'}">
+                <a th:href="@{/user/login}">Đăng nhập</a>
+                <a th:href="@{/user/register}">Đăng ký</a>
+            </div>
+
+            <!-- Hiển thị nếu người dùng đã đăng nhập -->
+            <div th:if="${userRole != 'GUEST'}">
+                <span>Xin chào, <strong th:text="${session.loggedInUser.name}"></strong>!</span>
+                <a th:href="@{/user/logout}">Đăng xuất</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header cho từng vai trò -->
+    <!-- Hiển thị nếu không có vai trò nào (dự phòng) -->
+    <div th:if="${userRole == 'GUEST'}">
+        <div class="search-bar">
+            <div style="display: flex; align-items: center;">
+                <input placeholder="Tìm kiếm sản phẩm..." type="text"/>
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="cart">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+        </div>
+        <div class="nav">
+            <a href="#">Trang chủ</a>
+            <a href="#">Cửa hàng</a>
+            <a href="#">Danh mục</a>
+            <a href="#">Liên hệ</a>
+            <a href="#">Giới thiệu</a>
+        </div>
+    </div>
+
+    <!-- Header cho ADMIN -->
+    <div th:if="${userRole == 'ADMIN'}">
+        <div class="search-bar">
+            <div style="display: flex; align-items: center;">
+                <input placeholder="Tìm kiếm sản phẩm..." type="text"/>
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="cart">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+        </div>
+        <div class="nav">
+            <a href="/admin/home">Trang chủ (Admin)</a>
+            <a href="/admin/manage-users">Quản lý người dùng</a>
+            <a href="/admin/reports">Báo cáo</a>
+        </div>
+    </div>
+
+    <!-- Header cho CUSTOMER -->
+    <div th:if="${userRole == 'CUSTOMER'}">
+        <div class="search-bar">
+            <div style="display: flex; align-items: center;">
+                <input placeholder="Tìm kiếm sản phẩm..." type="text"/>
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="cart">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+        </div>
+        <div class="nav">
+            <a href="/customer/dashboard">Trang chủ (Khách hàng)</a>
+            <a href="/customer/orders">Đơn hàng</a>
+            <a href="/customer/support">Hỗ trợ</a>
+        </div>
+    </div>
+
+    <!-- Header cho SELLER -->
+    <div th:if="${userRole == 'SELLER'}">
+        <div class="search-bar">
+            <div style="display: flex; align-items: center;">
+                <input placeholder="Tìm kiếm sản phẩm..." type="text"/>
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="cart">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+        </div>
+        <div class="nav">
+            <a href="/seller/dashboard">Trang chủ (Người bán)</a>
+            <a href="/seller/products">Sản phẩm</a>
+            <a href="/seller/orders">Đơn hàng</a>
+        </div>
+    </div>
+</div>

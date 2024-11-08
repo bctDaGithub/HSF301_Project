@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="/css/admin.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+      body {
+    background-image: url('/images/admin-home.png');
+    background-size: cover; /* Đảm bảo hình ảnh phủ hết trang */
+    background-position: center center; /* Căn chỉnh hình ảnh vào giữa trang */
+    background-repeat: no-repeat; /* Không lặp lại hình ảnh */
+    height: 100vh; /* Chiều cao 100% của viewport */
+    margin: 0; /* Đảm bảo không có khoảng trống quanh trang */
+}
+    </style>
+</head>
+<body>
+    <!-- Include Navbar Fragment -->
+    <div th:replace="fragments/navBarSeller :: navbar"></div>
+
+    <div class="container mt-5">
+        <h1>Welcome to the Seller Home Page</h1>
+        <p>Select an option from the menu to get started.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

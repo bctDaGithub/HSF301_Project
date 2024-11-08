@@ -1,7 +1,10 @@
 package hsf301.fe.project.controller;
 
 import hsf301.fe.project.pojo.Flower;
+import hsf301.fe.project.pojo.Users;
 import hsf301.fe.project.service.defines.IFlowerService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,9 +50,11 @@ public class FlowerController {
     }
 
     @PostMapping
-    public String createFlower(@ModelAttribute Flower flower) {
+    public String createFlower(@ModelAttribute Flower flower, HttpSession Session, HttpServletRequest request) {
+        flower.setSeller(((Users) Session.getAttribute("loggedInUser")));
         flowerService.saveFlower(flower);
-        return "redirect:/flowers";
+        String referer = request.getHeader("Referer");
+        return referer != null ? "redirect:" + referer : "Seller/flowers";
     }
 
     @GetMapping("/edit/{id}")
