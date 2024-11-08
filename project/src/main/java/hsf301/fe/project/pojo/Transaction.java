@@ -24,9 +24,6 @@ public class Transaction {
     @Column(name = "Amount")
     private Long amount;
 
-    @Column(name = "AuctionID", nullable = true)
-    private Integer auctionID;
-
     @Nationalized
     @Column(name = "Status", length = 50)
     private String status;
@@ -65,14 +62,6 @@ public class Transaction {
 
     public void setAmount(Long amount) {
         this.amount = amount;
-    }
-
-    public Integer getAuctionID() {
-        return auctionID;
-    }
-
-    public void setAuctionID(Integer auctionID) {
-        this.auctionID = auctionID;
     }
 
     public String getStatus() {
