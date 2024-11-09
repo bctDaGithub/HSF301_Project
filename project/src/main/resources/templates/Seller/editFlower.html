@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Flower</title>
+  <!-- Link to Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJf+q0mkmDIFM4T20gk5eph4p4ox6Mrj2LMgL9hT4w5vTpHh3rE0lph2Zmu4i" crossorigin="anonymous">
+  <style>
+    body {
+      background-color: #f0f8ff;
+      font-family: 'Arial', sans-serif;
+      padding: 50px 0;
+    }
+    .form-container {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-container:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+    .form-container h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #6c757d;
+      font-size: 2rem;
+    }
+    .form-container label {
+      font-weight: 500;
+      color: #495057;
+    }
+    .form-container input[type="text"],
+    .form-container input[type="number"],
+    .form-container input[type="file"] {
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      padding: 10px;
+      width: 100%;
+      transition: border-color 0.3s ease;
+    }
+    .form-container input[type="text"]:focus,
+    .form-container input[type="number"]:focus,
+    .form-container input[type="file"]:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .form-container .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: #ffffff;
+      padding: 12px 20px;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      transition: background-color 0.3s ease;
+    }
+    .form-container .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+    }
+    .form-container .form-group {
+      margin-bottom: 20px;
+    }
+    .form-container .form-label {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .form-container .form-control {
+      font-size: 1rem;
+    }
+    .form-container input[type="file"] {
+      padding: 8px;
+      border: 1px solid #ced4da;
+    }
+    .form-container .form-text {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="form-container">
+    <h1>Edit Flower</h1>
+    <!-- Sử dụng th:object để ràng buộc với đối tượng flower -->
+    <form th:action="@{/flowers/update/{id}(id=${flower.id})}" method="post" enctype="multipart/form-data" th:object="${flower}">
+
+      <div class="form-group">
+        <label for="name" class="form-label">Flower Name</label>
+        <input type="text" id="name" name="name" class="form-control" th:field="*{name}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="type" class="form-label">Flower Type</label>
+        <input type="text" id="type" name="type" class="form-control" th:field="*{type}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="quantity" class="form-label">Quantity</label>
+        <input type="number" id="quantity" name="quantity" class="form-control" th:field="*{quantity}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="condition" class="form-label">Condition</label>
+        <input type="text" id="condition" name="condition" class="form-control" th:field="*{condition}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" id="price" name="price" class="form-control" th:field="*{price}" required>
+      </div>
+
+
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+  </div>
+</div>
+
+
+<!-- Link to Bootstrap JS and Popper -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gyb5f7igqV1B94/rMft5wLkChDl4t37UoMf3V1ycnL9J5noC2V" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8Fq6q3V3zT2A+zfxd+n8bV0yFfm1d6o0zqzF9Lcb2l0pxk" crossorigin="anonymous"></script>
+
+</body>
+</html>

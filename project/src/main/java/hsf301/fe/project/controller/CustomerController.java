@@ -105,9 +105,8 @@ public class CustomerController {
         model.addAttribute("order", order);
         model.addAttribute("orderFlowers", orderFlowers);
         model.addAttribute("orderFlower", new OrderFlower());
-        return "Customer/oderDetail"; // Trả về view popup
+        return "Customer/orderDetail"; // Trả về view popup
     }
-
 
 }
 

@@ -52,7 +52,6 @@ public class FlowerServiceImpl implements IFlowerService {
             flower.setQuantity(flowerDetails.getQuantity());
             flower.setCondition(flowerDetails.getCondition());
             flower.setPrice(flowerDetails.getPrice());
-            flower.setSeller(flowerDetails.getSeller());
             return flowerRepository.save(flower);
         }
         return null; // hoặc throw exception nếu muốn xử lý lỗi

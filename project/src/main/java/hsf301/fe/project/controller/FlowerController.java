@@ -101,13 +101,13 @@ public class FlowerController {
     public String showEditFlowerForm(@PathVariable int id, Model model) {
         Flower flower = flowerService.getFlowerById(id);
         model.addAttribute("flower", flower);
-        return "flower/flower-form";
+        return "Seller/editFlower";
     }
 
     @PostMapping("/update/{id}")
     public String updateFlower(@PathVariable int id, @ModelAttribute Flower flowerDetails) {
         flowerService.updateFlower(id, flowerDetails);
-        return "redirect:/flowers";
+        return "redirect:/Seller/flowers";
     }
 
     @GetMapping("/delete/{id}")
