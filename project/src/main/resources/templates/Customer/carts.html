@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Giỏ Hàng</title>
+    <title>Shopping Cart</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/cart.css}">
     <script type="module">
         import { saveCurrentPage, updateBreadcrumb } from '/js/breadcrumbService.js';
 
-        saveCurrentPage('Giỏ hàng');
+        saveCurrentPage('Shopping Cart');
         window.addEventListener('DOMContentLoaded', updateBreadcrumb);
         console.log(localStorage.getItem('historyLinks'));
     </script>
@@ -16,15 +16,15 @@
 <body>
 <div class="cart-container">
     <nav class="breadcrumb mb-4" id="breadcrumb-nav"></nav>
-    <h1>Giỏ Hàng</h1>
+    <h1>Shopping Cart</h1>
 
     <div class="cart-header">
         <div class="cart-item-select"><input type="checkbox" id="select-all" onclick="toggleSelectAll(this)"></div>
-        <div class="cart-item-name">Sản phẩm</div>
-        <div class="cart-item-quantity">Số lượng</div>
-        <div class="cart-item-price">Đơn giá</div>
-        <div class="cart-item-total">Thành tiền</div>
-        <div class="cart-item-action">Thao tác</div>
+        <div class="cart-item-name">Product</div>
+        <div class="cart-item-quantity">Quantity</div>
+        <div class="cart-item-price">Unit Price</div>
+        <div class="cart-item-total">Total</div>
+        <div class="cart-item-action">Action</div>
     </div>
 
     <div th:each="cartItem : ${cartItems}" class="cart-item">
@@ -32,8 +32,8 @@
             <input type="checkbox" name="selectedItems" th:value="${cartItem.id}" class="cart-item-checkbox">
         </div>
         <div class="cart-item-name">
-            <img th:src="@{${cartItem.flower.imageUrl}}" alt="Sản phẩm">
-            <span th:text="${cartItem.flower.name}">Tên sản phẩm</span>
+            <img th:src="@{${cartItem.flower.imageUrl}}" alt="Product">
+            <span th:text="${cartItem.flower.name}">Product Name</span>
         </div>
 
         <div class="cart-item-quantity">
@@ -48,18 +48,18 @@
         <div class="cart-item-total" th:text="${#numbers.formatDecimal(cartItem.totalPrice, 1, 'COMMA', 2, 'POINT')}">250,000₫</div>
 
         <div class="cart-item-action">
-            <a href="#" th:href="@{/cart/remove/{id}(id=${cartItem.id})}" class="remove-link">Xóa</a>
+            <a href="#" th:href="@{/cart/remove/{id}(id=${cartItem.id})}" class="remove-link">Remove</a>
         </div>
     </div>
 
-    <!-- Form tổng kết giỏ hàng -->
+    <!-- Cart Summary Form -->
     <form class="cart-summary" th:action="@{/cart/checkout}" method="post">
-        <p>Tổng tiền sản phẩm đã chọn: <span id="selected-total">0₫</span></p>
-        <p>Tổng tiền: <span id="total-amount">0₫</span></p>
+        <p>Total selected items: <span id="selected-total">0₫</span></p>
+        <p>Grand Total: <span id="total-amount">0₫</span></p>
 
         <input type="hidden" name="cartItemIds" id="selected-cart-items" value="">
         <input type="hidden" name="totalPrice" id="total-price" value="">
-        <button type="button" class="checkout-button" onclick="submitCheckoutForm()">Mua hàng</button>
+        <button type="button" class="checkout-button" onclick="submitCheckoutForm()">Checkout</button>
     </form>
 
 </div>
@@ -87,7 +87,7 @@
         document.getElementById('selected-total').textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
         document.getElementById('total-amount').textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
 
-        // Gán giá trị tổng vào input ẩn để submit
+        // Set total price in hidden input for submission
         document.getElementById('total-price').value = total;
     }
 
@@ -105,11 +105,11 @@
         });
 
         if (selectedIds.length === 0) {
-            alert("Vui lòng chọn ít nhất một sản phẩm để mua.");
+            alert("Please select at least one product to checkout.");
             return;
         }
 
-        // Gán danh sách sản phẩm đã chọn vào input ẩn
+        // Set selected items in hidden input
         document.getElementById('selected-cart-items').value = selectedIds.join(',');
 
         // Submit form

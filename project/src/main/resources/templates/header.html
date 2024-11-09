@@ -3,38 +3,40 @@
 
     <!-- Top bar -->
     <div class="top-bar p-2 flex justify-between items-center text-sm">
-            <div class="top-links flex items-center space-x-2">
-                <a class="hover:text-blue-500" href="#">Trang chủ</a>
-                <span>|</span>
-                <a class="hover:text-blue-500" href="#">Tải ứng dụng</a>
-                <span>|</span>
-                <a class="hover:text-blue-500" href="#">Kết nối</a>
-                <a href="#"><img alt="Icon 1" height="15" src="https://storage.googleapis.com/a1aa/image/xMfAFfJ9CIrqS0UEFQ6ul64m0mlpCnTaPRYpfB28FfotWd7OB.jpg" width="15"/></a>
-                <a href="#"><img alt="Icon 2" height="15" src="https://storage.googleapis.com/a1aa/image/zX2uR1aAQbIhPt2BjKuozaKvEcvI432ejm54JwpoiFG2qb3JA.jpg" width="15"/></a>
-            </div>
+        <div class="top-links flex items-center space-x-2">
+            <a class="hover:text-blue-500" href="/showHomePage">Home</a>
+            <span>|</span>
+
+            <a class="hover:text-blue-500" href="#">Connect</a>
+            <a href="#"><img alt="Icon 1" height="15" src="https://storage.googleapis.com/a1aa/image/xMfAFfJ9CIrqS0UEFQ6ul64m0mlpCnTaPRYpfB28FfotWd7OB.jpg" width="15"/></a>
+            <a href="#"><img alt="Icon 2" height="15" src="https://storage.googleapis.com/a1aa/image/zX2uR1aAQbIhPt2BjKuozaKvEcvI432ejm54JwpoiFG2qb3JA.jpg" width="15"/></a>
+        </div>
         <div class="user-options flex items-center space-x-2">
-            <a class="hover:text-blue-500" href="#">Thông Báo</a>
+            <a class="hover:text-blue-500" href="#">Notifications</a>
             <span>|</span>
-            <a class="hover:text-blue-500" href="#">Hỗ Trợ</a>
+            <a class="hover:text-blue-500" href="#">Support</a>
             <span>|</span>
-            <a class="hover:text-blue-500" href="#">Ngôn ngữ</a>
+            <a class="hover:text-blue-500" href="#">Language</a>
             <span>|</span>
-            <a class="hover:text-blue-500" th:href="@{/user/login}" th:if="${userRole == 'GUEST'}">Đăng nhập</a>
-            <a class="hover:text-blue-500" th:href="@{/user/register}" th:if="${userRole == 'GUEST'}">Đăng ký</a>
-            <a class="hover:text-blue-500" th:href="@{/customer/home}" th:if="${userRole != 'GUEST'}"><span th:text="${session.loggedInUser.name}">User</span></a>
-            <a class="hover:text-blue-500" th:href="@{/user/logout}" th:if="${userRole != 'GUEST'}">Đăng xuất</a>
+            <a class="hover:text-blue-500" th:href="@{/user/login}" th:if="${userRole == 'GUEST'}">Login</a>
+            <a class="hover:text-blue-500" th:href="@{/user/register}" th:if="${userRole == 'GUEST'}">Register</a>
+            <a class="hover:text-blue-500" th:if="${userRole == 'ADMIN'}" th:href="@{/admin/home}" th:text="${session.loggedInUser.name}">Admin</a>
+            <a class="hover:text-blue-500" th:if="${userRole == 'SELLER'}" th:href="@{/Seller/home}" th:text="${session.loggedInUser.name}">Seller</a>
+            <a class="hover:text-blue-500" th:if="${userRole == 'CUSTOMER'}" th:href="@{/customer/home}" th:text="${session.loggedInUser.name}">Customer</a>
+
+            <a class="hover:text-blue-500" th:href="@{/user/logout}" th:if="${userRole != 'GUEST'}">Logout</a>
         </div>
     </div>
 
     <!-- Main bar -->
     <div class="main-bar bg-white p-4 flex justify-between items-center">
         <div class="logo flex items-center space-x-2">
-            <img alt="Logo" height="50" src="logo.png" width="100"/>
-            <span class="text-xl font-bold">Thương hiệu của bạn</span>
+            <img alt="Logo" height="50" src="/images/logo.png" width="100"/>
+            <span class="text-xl font-bold">Flower Platform</span>
         </div>
         <div class="flex items-center space-x-4">
             <div class="search-bar flex items-center">
-                <input class="border p-2 rounded-l w-80 focus:w-full" placeholder="Tìm kiếm..." type="text"/>
+                <input class="border p-2 rounded-l w-80 focus:w-full" placeholder="Search..." type="text"/>
                 <button class="bg-blue-500 text-white p-2 rounded-r" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
@@ -43,6 +45,12 @@
                 <a class="text-2xl" th:href="@{/customer/carts}">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count">0</span>
+                </a>
+            </div>
+            <div class="wallet-button">
+                <a th:href="@{/wallet}" th:if="${userRole == 'SELLER' || userRole == 'CUSTOMER'}" class="btn btn-primary flex items-center space-x-2">
+                    <i class="fas fa-wallet"></i> <!-- Wallet Icon -->
+                    <span>My Wallet</span>
                 </a>
             </div>
         </div>

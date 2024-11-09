@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Management</title>
+    <title>Seller Order Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
@@ -20,24 +20,20 @@
 <div class="container mx-auto mt-10">
     <div class="tab-container">
         <div class="tab active" onclick="showTab('all')">All</div>
-        <div class="tab" onclick="showTab('pending')">Pending Payment</div>
-        <div class="tab" onclick="showTab('completed')">Completed</div>
-        <div class="tab" onclick="showTab('cancelled')">Cancelled</div>
     </div>
 
-    <!-- All Orders Tab Content -->
+    <!-- Content for the "All" tab -->
     <div id="all" class="tab-content active">
         <div th:if="${allOrders != null and allOrders.isEmpty()}" class="empty-order">
             <p>No orders available</p>
         </div>
         <div th:if="${allOrders != null}" th:each="order : ${allOrders}" class="bg-white p-4 rounded shadow mb-4">
-            <a th:href="@{/customer/orderDetails/{orderId}(orderId=${order.orderId})}" class="block text-blue-500 hover:underline">
+            <a th:href="@{/Seller/orderDetails/{orderId}(orderId=${order.orderId})}" class="block text-blue-500 hover:underline">
                 Order ID: <span th:text="${order.orderId}"></span> - Total Price: <span th:text="${order.totalPrice}">0</span> - Status: <span th:text="${order.status}"></span>
             </a>
         </div>
     </div>
-
-
+</div>
 <script>
     function showTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(function(content) {

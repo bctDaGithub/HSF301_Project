@@ -22,22 +22,22 @@
     <div class="card-body">
       <div class="table-responsive">
 
-          <table class="table table-hover">
-            <thead class="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Quantity</th>
-              <th>Condition</th>
-              <th>Price</th>
-              <th>Actions</th>
-            </tr>
-            </thead>
-            <th:block th:if="${#lists.isEmpty(flowers)}">
-              <p>Không có hoa nào được tìm thấy.</p>
-            </th:block>
-            <th:block th:if="${not #lists.isEmpty(flowers)}">
+        <table class="table table-hover">
+          <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Condition</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <th:block th:if="${#lists.isEmpty(flowers)}">
+            <p>No flowers found.</p>
+          </th:block>
+          <th:block th:if="${not #lists.isEmpty(flowers)}">
             <tbody>
             <tr th:each="flower : ${flowers}">
               <td th:text="${flower.id}"></td>
@@ -66,8 +66,8 @@
               </td>
             </tr>
             </tbody>
-            </th:block>
-          </table>
+          </th:block>
+        </table>
         </th:block>
       </div>
     </div>

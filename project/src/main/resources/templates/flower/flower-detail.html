@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>
-    Chi tiết Hoa - Flower Detail
+    Flower Detail
   </title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
@@ -14,7 +14,7 @@
   <script type="module">
     import { saveCurrentPage, updateBreadcrumb } from '/js/breadcrumbService.js';
 
-    saveCurrentPage('Chi tiết hoa');
+    saveCurrentPage('Flower Detail');
     window.addEventListener('DOMContentLoaded', updateBreadcrumb);
     console.log(localStorage.getItem('historyLinks'));
   </script>
@@ -26,86 +26,83 @@
   <nav class="breadcrumb mb-4" id="breadcrumb-nav"></nav>
 
   <div class="flower-details">
-    <!-- Hình ảnh hoa -->
+    <!-- Flower Images -->
     <div class="flower-images">
       <div class="main-image mb-4">
-        <img th:src="${flower.imageUrl}" alt="Hình ảnh của hoa" class="w-full h-auto" height="600" width="600"/>
+        <img th:src="${flower.imageUrl}" alt="Image of the flower" class="w-full h-auto" height="600" width="600"/>
       </div>
       <div class="thumbnail-images flex">
-        <img th:src="${flower.imageUrl}" alt="Thumbnail 1 của hoa" height="100" width="100"/>
-        <img th:src="${flower.imageUrl}" alt="Thumbnail 2 của hoa" height="100" width="100"/>
-        <img th:src="${flower.imageUrl}" alt="Thumbnail 3 của hoa" height="100" width="100"/>
+        <img th:src="${flower.imageUrl}" alt="Thumbnail 1 of flower" height="100" width="100"/>
+        <img th:src="${flower.imageUrl}" alt="Thumbnail 2 of flower" height="100" width="100"/>
+        <img th:src="${flower.imageUrl}" alt="Thumbnail 3 of flower" height="100" width="100"/>
       </div>
     </div>
 
-    <!-- Thông tin hoa -->
+    <!-- Flower Information -->
     <div class="flower-info">
       <h1>
-        <span th:text="${flower.name}">Tên hoa</span>
+        <span th:text="${flower.name}">Flower Name</span>
       </h1>
-      <p><strong>Loại:</strong> <span th:text="${flower.type}">Loại hoa</span></p>
-      <p><strong>Số lượng:</strong> <span th:text="${flower.quantity}">50</span></p>
-      <p><strong>Tình trạng:</strong> <span th:text="${flower.condition}">Còn hàng</span></p>
+      <p><strong>Type:</strong> <span th:text="${flower.type}">Flower Type</span></p>
+      <p><strong>Quantity:</strong> <span th:text="${flower.quantity}">50</span></p>
+      <p><strong>Condition:</strong> <span th:text="${flower.condition}">In Stock</span></p>
       <p class="price"><span th:text="${flower.price}">420,000₫</span>
         <span class="original-price">500,000₫</span>
         <span class="discount">-16%</span>
       </p>
 
-      <!-- Khuyến mãi -->
+      <!-- Promotions -->
       <div class="promotion mb-4">
-        <h3>Khuyến mãi:</h3>
+        <h3>Promotion:</h3>
         <ul>
-          <li>Giảm 10% khi mua từ 2 sản phẩm</li>
-          <li>Miễn phí vận chuyển cho đơn hàng trên 500,000₫</li>
-          <li>Nhận ngay quà tặng trị giá 100,000₫</li>
+          <li>10% discount when buying 2 or more products</li>
+          <li>Free shipping on orders over 500,000₫</li>
+          <li>Receive a gift worth 100,000₫</li>
         </ul>
       </div>
 
-      <!-- Chọn số lượng và hành động -->
+      <!-- Quantity Selection and Actions -->
       <div class="actions mb-4">
         <form th:action="@{/cartItem/add}" th:object="${cartItem}" method="post">
-          <label for="quantity">Số lượng:</label>
+          <label for="quantity">Quantity:</label>
           <input id="quantity" name="quantity" type="number" min="1" max="10" value="1" th:field="*{quantity}" />
 
-          <!-- Input hidden để gửi flowerId hoặc productId -->
+          <!-- Hidden Input for flowerId or productId -->
           <input type="hidden" id="unitPrice" name="unitPrice" th:value="${flower.price}" />
           <input type="hidden" th:name="flowerId" th:value="${flower.id}" />
-          <!-- Nút Mua ngay -->
-          <button type="button" class="buy-now">Mua ngay</button>
+          <!-- Buy Now Button -->
+          <button type="button" class="buy-now">Buy Now</button>
 
-          <!-- Nút Thêm vào giỏ hàng và Thêm vào yêu thích -->
-          <button type="submit" class="add-to-cart" onclick="addToCart()">Thêm vào giỏ hàng</button>
-          <button type="button" class="wishlist" onclick="addToWishlist()">❤ Thêm vào yêu thích</button>
+          <!-- Add to Cart and Wishlist Buttons -->
+          <button type="submit" class="add-to-cart" onclick="addToCart()">Add to Cart</button>
+          <button type="button" class="wishlist" onclick="addToWishlist()">❤ Add to Wishlist</button>
         </form>
       </div>
 
-
-      <!-- Mô tả hoa -->
+      <!-- Flower Description -->
       <div class="flower-description">
-        <h3>Thông tin hoa:</h3>
-        <p><span th:text="${flower.name}">Mô tả chi tiết về hoa</span></p>
+        <h3>Flower Information:</h3>
+        <p><span th:text="${flower.name}">Detailed description of the flower</span></p>
         <ul>
-          <ul>
-            <li><strong>Tần số tỏa hương:</strong> Tỏa hương thơm dịu nhẹ, nhịp nhàng lan tỏa đến 42,000 lần mỗi phút</li>
-            <li><strong>Loài hoa:</strong> Có 5 sắc thái và biến thể hoa, mỗi loại mang nét đẹp riêng biệt và độc đáo</li>
-            <li><strong>Đặc điểm nổi bật:</strong> Cánh hoa mềm mại, dáng nhỏ gọn, dễ chăm sóc và phù hợp trang trí nhiều không gian khác nhau</li>
-          </ul>
+          <li><strong>Fragrance frequency:</strong> Emits a gentle fragrance, spreading harmoniously up to 42,000 times per minute</li>
+          <li><strong>Flower species:</strong> Has 5 unique color shades and variations, each with its own distinctive beauty</li>
+          <li><strong>Outstanding features:</strong> Soft petals, compact form, easy to care for, and suitable for various decorative spaces</li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- Đánh giá hoa -->
+  <!-- Customer Reviews -->
   <div class="flower-reviews" id="reviews">
-    <h2 class="text-2xl font-bold mb-4">Đánh giá của khách hàng</h2>
+    <h2 class="text-2xl font-bold mb-4">Customer Reviews</h2>
     <div class="review mb-4">
-      <p><strong>Người dùng A:</strong> ⭐⭐⭐⭐⭐ Hoa rất đẹp và tươi mới, dịch vụ tốt!</p>
+      <p><strong>User A:</strong> ⭐⭐⭐⭐⭐ Beautiful and fresh flowers, great service!</p>
     </div>
     <div class="review mb-4">
-      <p><strong>Người dùng B:</strong> ⭐⭐⭐⭐ Hoa đúng như hình ảnh, giao hàng nhanh chóng.</p>
+      <p><strong>User B:</strong> ⭐⭐⭐⭐ Flowers look as pictured, fast delivery.</p>
     </div>
     <div class="review mb-4">
-      <p><strong>Người dùng C:</strong> ⭐⭐⭐⭐⭐ Đẹp, thơm, rất hài lòng.</p>
+      <p><strong>User C:</strong> ⭐⭐⭐⭐⭐ Lovely, fragrant, very satisfied.</p>
     </div>
   </div>
 </div>
@@ -114,13 +111,13 @@
 <script>
   function addToCart() {
     const quantity = document.getElementById("quantity").value;
-    alert(`Đã thêm ${quantity} sản phẩm vào giỏ hàng!`);
-    // Gửi yêu cầu AJAX để thêm vào giỏ hàng
+    alert(`Added ${quantity} items to the cart!`);
+    // Send AJAX request to add to cart
   }
 
   function addToWishlist() {
-    alert("Sản phẩm đã được thêm vào danh sách yêu thích!");
-    // Gửi yêu cầu AJAX để thêm vào danh sách yêu thích
+    alert("Product has been added to wishlist!");
+    // Send AJAX request to add to wishlist
   }
 </script>
 </html>
