@@ -1,11 +1,9 @@
 package hsf301.fe.project.controller;
 
-import hsf301.fe.project.pojo.Cart;
-import hsf301.fe.project.pojo.CartItem;
-import hsf301.fe.project.pojo.Flower;
-import hsf301.fe.project.pojo.Users;
+import hsf301.fe.project.pojo.*;
 import hsf301.fe.project.service.defines.ICartItemService;
 import hsf301.fe.project.service.defines.ICartService;
+import hsf301.fe.project.service.implement.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +22,8 @@ public class CartController {
     private ICartService cartService;
     @Autowired
     private ICartItemService cartItemService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/{userId}")
     public ResponseEntity<Cart> getCartByUserId(@PathVariable int userId) {
@@ -55,5 +55,18 @@ public class CartController {
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("cartItem", new CartItem());
         return "/Customer/carts";
+    }
+    @PostMapping("/checkout")
+    public String checkoutSelectedItems(@RequestParam("cartItemIds") List<Integer> cartItemIds,
+                                        @RequestParam("totalPrice") Double totalPrice,
+                                        HttpSession httpSession,
+                                        Model model) {
+        Users users = (Users) httpSession.getAttribute("loggedInUser");
+
+        // Chuyển đổi totalPrice từ Double sang Long trước khi gọi service
+        Long totalPriceLong = totalPrice.longValue();
+
+        // Gọi phương thức processOrder với totalPriceLong kiểu Long
+        return orderService.processOrder(users, cartItemIds, totalPriceLong, model, httpSession);
     }
 }
