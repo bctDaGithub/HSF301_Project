@@ -1,6 +1,6 @@
 // Bản đồ ánh xạ các loại tài nguyên với tên hiển thị
 const resourceNames = {
-    flowers: "Chi tiết hoa",
+    flowers: "Flower Detail",
     order: "Chi tiết đơn hàng",
     cartItem: "Giỏ hàng"
 };
@@ -17,7 +17,7 @@ export function updateBreadcrumb() {
     }
 
     // Khởi tạo breadcrumb với liên kết đến Trang chủ
-    breadcrumbNav.innerHTML = '<a href="/showHomePage">Trang chủ</a> / ';
+    breadcrumbNav.innerHTML = '<a href="/showHomePage">Home Page</a> / ';
 
     // Hiển thị các trang khác trong lịch sử, tránh trùng lặp
     historyLinks.forEach((link, index) => {

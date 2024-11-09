@@ -1,8 +1,11 @@
 package hsf301.fe.project.controller;
 
 import hsf301.fe.project.pojo.Flower;
+import hsf301.fe.project.pojo.Order;
+import hsf301.fe.project.pojo.OrderFlower;
 import hsf301.fe.project.pojo.Users;
 import hsf301.fe.project.service.defines.IFlowerService;
+import hsf301.fe.project.service.defines.IOrderService;
 import hsf301.fe.project.service.defines.IUsersService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/Seller")
@@ -20,6 +24,8 @@ public class SellerController {
     private IUsersService usersService;
     @Autowired
     private IFlowerService flowerService;
+    @Autowired
+    private IOrderService orderService;
 
     private String checkSellerAccess(HttpSession session) {
         Users loggedInUser = (Users) session.getAttribute("loggedInUser");
@@ -74,11 +80,16 @@ public class SellerController {
     }
 
     @GetMapping("/orders")
-    public String showOrders(HttpSession session) {
+    public String showOrders(HttpSession session,Model model) {
         String accessCheck = checkSellerAccess(session);
         if (accessCheck != null) {
             return accessCheck;
         }
+        List<Order>  allOrders = orderService.getOrdersByCustomerId(((Users) session.getAttribute("loggedInUser")).getId());
+
+        model.addAttribute("allOrders", allOrders);
+        model.addAttribute("order", new Order());
+        model.addAttribute("orderFlower", new OrderFlower());
         return "Seller/orders";
     }
 
