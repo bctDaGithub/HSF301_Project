@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kết quả giao dịch</title>
+    <title>Transaction Result</title>
 </head>
 <body>
-<h1>Kết quả giao dịch</h1>
+<h1>Transaction Result</h1>
 
-<!-- Kết quả giao dịch sẽ hiển thị ở đây -->
+<!-- The transaction result will be displayed here -->
 <p>
-    Giao dịch
-    <span th:text="${success ? 'thành công' : 'thất bại'}">Thành công</span>!
+    Transaction
+    <span th:text="${success ? 'successful' : 'failed'}">Successful</span>!
     <br>
-    Mã giao dịch: <span th:text="${txnRef}">Mã giao dịch</span>
+    Transaction ID: <span th:text="${txnRef}">Transaction ID</span>
     <br>
-    Số tiền: <span th:text="${amount}">Số tiền</span> VNĐ
+    Amount: <span th:text="${amount}">Amount</span> VND
 </p>
 </body>
 </html>

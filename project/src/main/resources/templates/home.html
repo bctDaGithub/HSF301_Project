@@ -12,7 +12,7 @@
     import { saveCurrentPage,} from '/js/breadcrumbService.js';
 
     // Gọi hàm lưu trang nhưng không cần update breadcrumb
-    saveCurrentPage('Trang chủ');
+    saveCurrentPage('Home Page');
   </script>
   <script>
     function markAsRead(notiId) {
@@ -52,14 +52,10 @@
   </div>
 
   <!-- Nút chuyển đến ví của người dùng -->
-  <div class="wallet-button">
-    <a th:href="@{/wallet}" class="btn btn-primary">
-      Xem ví của bạn
-    </a>
-  </div>
+
 
   <div class="sidebar">
-    <h2>Quảng cáo</h2>
+    <h2>Advertisements</h2>
     <div class="ad">
       <img alt="Ad 1 - A beautiful flower arrangement" height="200" src="https://storage.googleapis.com/a1aa/image/ciSABHnLiu5nOlmTdNTMs8Mpsg7v4tNx8yFQ55Pa7fomejuTA.jpg" width="300"/>
       <h3>Ad 1</h3>
@@ -70,7 +66,7 @@
       <h3>Ad 2</h3>
       <p>Get the best deals on mixed flower bouquets.</p>
     </div>
-    <h2>Shop nổi tiếng</h2>
+    <h2>Popular Shops</h2>
     <div class="shop">
       <img alt="Shop 1 - A popular flower shop" height="200" src="https://storage.googleapis.com/a1aa/image/lhO5AsXUz6q0INB29PKKMkvLtanqQGNquNeFtIFMQBDnejuTA.jpg" width="300"/>
       <h3>Shop 1</h3>
@@ -83,6 +79,7 @@
     </div>
   </div>
 </div>
+
 
 <div th:replace="footer :: footer"></div>
 </body>

@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nạp tiền vào ví</title>
+    <title>Add Funds to Wallet</title>
 </head>
 <body>
-<h1>Nạp tiền vào ví</h1>
+<h1>Add Funds to Wallet</h1>
 
-<!-- Form để gửi yêu cầu nạp tiền -->
+<!-- Form to submit add funds request -->
 <form action="/wallet/add-funds" method="post">
-    <label for="amount">Số tiền nạp (VNĐ):</label>
+    <label for="amount">Deposit Amount (VND):</label>
     <input type="number" id="amount" name="amount" required min="1">
-    <button type="submit">Nạp tiền</button>
+    <button type="submit">Add Funds</button>
 </form>
 </body>
 </html>
