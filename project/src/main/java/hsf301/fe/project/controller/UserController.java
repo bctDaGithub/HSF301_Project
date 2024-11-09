@@ -122,7 +122,7 @@ public class UserController {
                 if ("ADMIN".equals(role)) {
                     return referer != null ? "redirect:" + referer : "redirect:/admin/home";
                 } else if ("CUSTOMER".equals(role)) {
-                    return referer != null ? "redirect:" + referer : "redirect:/showHomePage";
+                    return referer != null ? "redirect:" + referer : "redirect:/customer/home";
                 } else if ("SELLER".equals(role)) {
                     return referer != null ? "redirect:" + referer : "redirect:/Seller/home";
                 } else {

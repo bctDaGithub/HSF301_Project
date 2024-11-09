@@ -11,16 +11,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" th:href="@{/css/flower-detail.css}">
   <link rel="stylesheet" th:href="@{/css/styles.css}">
+  <script type="module">
+    import { saveCurrentPage, updateBreadcrumb } from '/js/breadcrumbService.js';
+
+    saveCurrentPage('Chi tiết hoa');
+    window.addEventListener('DOMContentLoaded', updateBreadcrumb);
+    console.log(localStorage.getItem('historyLinks'));
+  </script>
 </head>
 <body>
 <div th:replace="~{header :: header}"></div>
 <div class="flower-page">
   <!-- Breadcrumb -->
-  <nav class="breadcrumb mb-4">
-    <a href="#">Trang chủ</a> /
-    <a href="#">Hoa</a> /
-    <a href="#">Chi tiết hoa</a> / Chi tiết
-  </nav>
+  <nav class="breadcrumb mb-4" id="breadcrumb-nav"></nav>
 
   <div class="flower-details">
     <!-- Hình ảnh hoa -->
@@ -40,7 +43,6 @@
       <h1>
         <span th:text="${flower.name}">Tên hoa</span>
       </h1>
-      <p><strong>ID:</strong> <span th:text="${flower.id}">123456</span></p>
       <p><strong>Loại:</strong> <span th:text="${flower.type}">Loại hoa</span></p>
       <p><strong>Số lượng:</strong> <span th:text="${flower.quantity}">50</span></p>
       <p><strong>Tình trạng:</strong> <span th:text="${flower.condition}">Còn hàng</span></p>
@@ -83,9 +85,11 @@
         <h3>Thông tin hoa:</h3>
         <p><span th:text="${flower.name}">Mô tả chi tiết về hoa</span></p>
         <ul>
-          <li><strong>Tần số rung:</strong> 42,000 lần/phút</li>
-          <li><strong>Chế độ:</strong> 5 chế độ làm sạch</li>
-          <li><strong>Đặc điểm:</strong> Thiết kế gọn nhẹ, dễ dàng sử dụng và vệ sinh</li>
+          <ul>
+            <li><strong>Tần số tỏa hương:</strong> Tỏa hương thơm dịu nhẹ, nhịp nhàng lan tỏa đến 42,000 lần mỗi phút</li>
+            <li><strong>Loài hoa:</strong> Có 5 sắc thái và biến thể hoa, mỗi loại mang nét đẹp riêng biệt và độc đáo</li>
+            <li><strong>Đặc điểm nổi bật:</strong> Cánh hoa mềm mại, dáng nhỏ gọn, dễ chăm sóc và phù hợp trang trí nhiều không gian khác nhau</li>
+          </ul>
         </ul>
       </div>
     </div>
